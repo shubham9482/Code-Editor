@@ -1,0 +1,194 @@
+<div id="band" class="container">
+  <!-- <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a >Dashboard</a></li>
+    <li class="breadcrumb-item active">Manage Courses</li>
+  </ol> -->
+  <div class="col-sm-3">
+    <h2>Manage Course</h2>
+    <input type="radio" value="student" name="entity" [(ngModel)]="entity" required (ngModelChange)="radioButtonClicked()"> Student
+    <input type="radio" value="faculty" name="entity" [(ngModel)]="entity" required (ngModelChange)="radioButtonClicked()"> Faculty
+    <div class="form-group" style="padding-top:10px">
+      <select class="form-control" [(ngModel)]="selectedCourse" (ngModelChange)="courseChange()">
+              <option selected="selected" value="">--Select Course--</option>
+              <option *ngFor = 'let course of courses' [ngValue]="course">{{course.fullName}}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <div class="dropdown">
+        <button class="form-control dropdown-toggle" type="button" data-toggle="dropdown">Select Departments
+              <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <li *ngFor='let department of departments'><a><input type="checkbox" [(ngModel)]="department.checked"
+            (ngModelChange)="onDeptChange()" [disabled]="rollNo != '' || selectedCourse == ''"/>{{department.dept}}</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="dropdown">
+        <button class="form-control dropdown-toggle" type="button" data-toggle="dropdown">Select Years
+              <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <li *ngFor='let year of years'><a><input type="checkbox" [(ngModel)]="year.checked" 
+            (ngModelChange)="onYearChange()" [disabled]="rollNo != '' || selectedCourse == ''"/>{{year.year}}</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <input class="form-control" placeholder="Roll Number" [(ngModel)]="rollNo" [disabled]="deptSelected || yearSelected || selectedCourse == ''"
+      />Comma Separated ( , )
+    </div>
+
+    <button class="btn btn-info m-2" (click)="applyFilter()" [disabled]="rollNo == '' && !deptSelected && !yearSelected">Apply Filter</button>
+    <button class="btn btn-info m-2" (click)="resetFilters()" [disabled]="rollNo == '' && !deptSelected && !yearSelected">Reset Filters</button>
+
+  </div>
+
+  <div class="col-sm-12" *ngIf="entity==='student'">
+    <h2>List Of Allocated Students</h2>
+    <div class="alert alert-danger" *ngIf="allocatedStudents.length == 0">No Students are allocated. </div>
+    <table *ngIf="allocatedStudents.length != 0" class="table-blue-bg table faculty-table table-responsive table-striped table-hover "
+      cellspacing="0" cellpadding="3" rules="cols">
+      <tbody>
+        <tr align="left">
+          <th scope="col"><input type="checkbox" [(ngModel)]="allocatedSelectAll" (ngModelChange)="allocatedTableRowChecked('allrowsselected','allocatedStudent')">Select
+            all
+          </th>
+          <th scope="col">Student Name</th>
+          <th scope="col">Roll Number</th>
+          <th scope="col">Department</th>
+          <th scope="col">Year &nbsp; &nbsp;&nbsp;&nbsp; </th>
+        </tr>
+        <tr *ngFor="let allocatedStudent of allocatedStudents">
+          <td align="center"><input type="checkbox" [(ngModel)]="allocatedStudent.checked" (ngModelChange)="allocatedTableRowChecked('','allocatedStudent')"></td>
+          <td>
+            {{allocatedStudent.firstName}} {{allocatedStudent.lastName}}
+          </td>
+          <td>
+            {{allocatedStudent.rollNo}}
+          </td>
+          <td>
+            {{allocatedStudent.department}}
+          </td>
+          <td>
+            {{allocatedStudent.year}}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- <button [disabled]="studentsToAllocate.length === 0">Allocate</button> -->
+  </div>
+
+
+  <div class="col-sm-12" *ngIf="entity==='student'">
+    <h2>List Of Filtered Students</h2>
+    <div class="alert alert-danger" *ngIf="students.length == 0">No Students are available.</div>
+    <table *ngIf="students.length != 0" class="table-blue-bg table faculty-table table-responsive table-striped table-hover "
+      cellspacing="0" cellpadding="3" rules="cols">
+      <tbody>
+        <tr align="left">
+          <th scope="col"><input type="checkbox" [(ngModel)]="filteredSelectAll" (ngModelChange)="filteredTableRowChecked('allrowsselected','filteredStudent')">Select
+            all
+          </th>
+          <th scope="col">Student Name</th>
+          <th scope="col">Roll Number</th>
+          <th scope="col">Department</th>
+          <th scope="col">Year &nbsp; &nbsp;&nbsp;&nbsp; </th>
+          <!-- <th scope="col">Year &nbsp; &nbsp;&nbsp;&nbsp; </th> -->
+        </tr>
+        <tr *ngFor="let student of students">
+          <td align="center"><input type="checkbox" [(ngModel)]="student.checked" (ngModelChange)="filteredTableRowChecked('','filteredStudent')"></td>
+          <td>
+            {{student.firstName}} {{student.lastName}}
+          </td>
+          <td>
+            {{student.rollNo}}
+          </td>
+          <td>
+            {{student.department}}
+          </td>
+          <td>
+            {{student.year}}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <button [disabled]="filteredStudentsToAllocate.length === 0 && allocatedStudentsToAllocate.length === 0" (click)="allocateStudents()"
+      style="color: black;">Allocate</button>
+  </div>
+
+  <div class="col-sm-12" *ngIf="entity==='faculty'">
+    <h2>List Of Allocated Faculties</h2>
+    <div class="alert alert-danger" *ngIf="allocatedFaculties.length == 0">No Faculties are allocated. </div>
+    <table *ngIf="allocatedFaculties.length != 0" class="table-blue-bg table faculty-table table-responsive table-striped table-hover "
+      cellspacing="0" cellpadding="3" rules="cols">
+      <tbody>
+        <tr align="left">
+          <th scope="col"><input type="checkbox" [(ngModel)]="allocatedSelectAll" (ngModelChange)="allocatedTableRowChecked('allrowsselected','allocatedFaculty')">Select
+            all
+          </th>
+          <th scope="col">Faculty Name</th>
+          <th scope="col">Roll Number</th>
+          <th scope="col">Department</th>
+          <th scope="col">Year &nbsp; &nbsp;&nbsp;&nbsp; </th>
+        </tr>
+        <tr *ngFor="let allocatedFaculty of allocatedFaculties">
+          <td align="center"><input type="checkbox" [(ngModel)]="allocatedFaculty.checked" (ngModelChange)="allocatedTableRowChecked('','allocatedFaculty')"></td>
+          <td>
+            {{allocatedFaculty.firstName}} {{allocatedFaculty.lastName}}
+          </td>
+          <td>
+            {{allocatedFaculty.rollNo}}
+          </td>
+          <td>
+            {{allocatedFaculty.department}}
+          </td>
+          <td>
+            {{allocatedFaculty.year}}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- <button [disabled]="studentsToAllocate.length === 0">Allocate</button> -->
+  </div>
+
+
+  <div class="col-sm-12" *ngIf="entity==='faculty'">
+    <h2>List Of Filtered Faculies</h2>
+    <div class="alert alert-danger" *ngIf="faculties.length == 0">No Faculties are available.</div>
+    <table *ngIf="faculties.length != 0" class="table-blue-bg table faculty-table table-responsive table-striped table-hover "
+      cellspacing="0" cellpadding="3" rules="cols">
+      <tbody>
+        <tr align="left">
+          <th scope="col"><input type="checkbox" [(ngModel)]="filteredSelectAll" (ngModelChange)="filteredTableRowChecked('allrowsselected','filteredFaculty')">Select
+            all
+          </th>
+          <th scope="col">Faculty Name</th>
+          <th scope="col">Roll Number</th>
+          <th scope="col">Department</th>
+          <th scope="col">Year &nbsp; &nbsp;&nbsp;&nbsp; </th>
+        </tr>
+        <tr *ngFor="let faculty of faculties">
+          <td align="center"><input type="checkbox" [(ngModel)]="faculty.checked" (ngModelChange)="filteredTableRowChecked('','filteredFaculty')"></td>
+          <td>
+            {{faculty.firstName}} {{faculty.lastName}}
+          </td>
+          <td>
+            {{faculty.rollNo}}
+          </td>
+          <td>
+            {{faculty.department}}
+          </td>
+          <td>
+            {{faculty.year}}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <button [disabled]="filteredFacultyToAllocate.length === 0 && allocatedFacultiesToAllocate.length === 0" (click)="allocateFaculties()"
+      style="color: black;">Allocate</button>
+  </div>
+
+</div>

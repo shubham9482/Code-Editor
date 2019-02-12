@@ -1,0 +1,52 @@
+<div id="band" class="container">
+
+  <br>
+  <div class="row">
+    <div class="col-sm-6">
+      <h2>Create Contest</h2>
+
+      <div class="form-group">
+        <label>Contest Name</label>
+        <input type="text" [(ngModel)]="contestName" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <app-ngx-editor [placeholder]="'Enter text here...'" [config]="editorConfig" [spellcheck]="true" [(ngModel)]="description"></app-ngx-editor>
+      </div>
+      <div class="form-group">
+        <label>Prizes</label>
+        <app-ngx-editor [placeholder]="'Enter text here...'" [config]="editorConfig" [spellcheck]="true" [(ngModel)]="prizes"></app-ngx-editor>
+      </div>
+
+      <div class="form-group">
+        <label>Start Date :&nbsp;</label>
+        <input type="date" [(ngModel)]="startDate">
+        <span style="color:red">&nbsp;&nbsp;at&nbsp;&nbsp;</span><input type="text" style="position: relative;width: 6.5em;"
+          [(ngModel)]="startTime" (focus)="onFocus='start'">
+        <app-time-picker [hidden]="!(onFocus==='start')" (timePicker)="setTime($event,'startTime')"
+          style="position: absolute;right: 205px !important;margin-top: -150px;z-index: 2;"></app-time-picker>
+        <span>&nbsp;&nbsp;IST</span>
+      </div>
+
+      <div class="form-group">
+        <label>End Date :&nbsp;</label>
+        <input type="date" [(ngModel)]="endDate">
+        <span style="color:red">&nbsp;&nbsp;at&nbsp;&nbsp;</span><input type="text" style="position: relative;width: 6.5em;"
+          [(ngModel)]="endTime" (focus)="onFocus='end'">
+        <app-time-picker [hidden]="!(onFocus==='end')" (timePicker)="setTime($event,'endTime')"
+          style="position: absolute;right: 212px !important;margin-top: -150px;z-index: 2;"></app-time-picker>
+        <span>&nbsp;&nbsp;IST</span>
+      </div>
+      Duration (in Minutes)<input class="form-control" type="number" [(ngModel)]="duration" />
+      <div><button class="btn btn-primary m-2" style="margin-top:15px" (click)="submit()" [disabled]="!contestName">Create Contest</button></div>
+      <div class="margin-top alert alert-success" *ngIf="submitted">
+        <p>Contest Created.</p>
+      </div>
+      <div class="margin-top alert alert-danger" *ngIf="error">
+        <p>Something Went Wrong.</p>
+      </div>
+    </div>
+
+  </div>
+
+</div>

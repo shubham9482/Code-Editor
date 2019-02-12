@@ -1,0 +1,196 @@
+<div id="myCarousel" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+        <div class="item active">
+            <a href="#openModal1"><img src="../assets/images/course-1.jpg" alt="Los Angeles" style="width:100%;"></a>
+              <div class="carousel-caption">
+             <h1>Simplify your programing landscape.</h1>
+            <!-- <p>The 4th Industrial Revolution is here. Enable consumers by developing digital storefronts that reimagine the digital customer experience.</p> -->
+          </div>
+        </div>
+    
+        <div class="item">
+          <a href="#openModal2"><img src="../assets/images/course-2.jpg" alt="Chicago" style="width:100%;"></a>
+          <div class="carousel-caption">  
+            <h1>Competitive Programming Strategy</h1>  
+             <!-- <p>The 4th Industrial Revolution is here. Enable consumers by developing digital storefronts that reimagine the digital customer experience.</p> -->
+          </div>
+        </div>
+      
+
+      </div>
+      <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="right carousel-control" href="#myCarousel" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+            <span class="sr-only">Next</span>
+          </a>
+      </div>
+
+
+<h2 class="student-h2-heading">My Courses</h2>
+<div id="band" class="container-fluid">
+        <div class="col-md-8 student-bg-white">   
+
+        <ul class="nav nav-tabs card-body bg-info text-white" role="tablist">
+            <li class="nav-item active">
+                <a class="nav-link active" data-toggle="tab" href="#home">In Progress</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#menu1">Finished</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div id="home" class=" tab-pane active">
+
+                <div class="col-md-6 gray-box  line-height-20px" *ngIf="courses.onGoing.length!==0">                    <div class="row">
+                        <div class="col-md-10">
+                            <h3>{{courses?.onGoing[0]?.name}}</h3>
+                            <p>{{courses?.onGoing[0]?.description}}
+                            </p>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="weeks-stats pull-right">
+                                <span style="font-size: 30px; line-height:30px">{{courses?.onGoing[0]?.doneModule}}/{{courses?.onGoing[0]?.maxModule}}</span>
+                                <br>
+                                <b>Modules</b>
+                            </div>
+
+                        </div>
+                        <div class="small col-md-12">
+                            <button type="button" class="btn dp-btn-primary" (click)="resume(courses.onGoing[0]._id)">
+                                <span class="glyphicon glyphicon-eye-open"></span> Resume</button>
+                            <button type="button" class="btn dp-btn-success pull-right" (click)="getLeaderboard(courses.onGoing[0]._id,'ongoing')">
+                                <span class="glyphicon glyphicon-tower"></span> LeaderBoard</button>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-6 gray-box  line-height-20px" *ngIf="courses.onGoing.length===0">
+                    No Courses are in progress.
+                </div>
+
+                <div class="col-sm-12" *ngIf="onGoingLeaderBoard.length != 0">
+                    <h2>Leaderboard</h2>
+                    <!-- <div class="alert alert-danger" *ngIf="students.length == 0">No Students are available.</div> -->
+                    <table class="table-blue-bg table faculty-table table-responsive table-striped table-hover " cellspacing="0" cellpadding="3"
+                        rules="cols">
+                        <tbody>
+                            <tr align="left">
+                                <th scope="col">
+                                    Rank
+                                </th>
+                                <th scope="col">Student Name</th>
+                                <th scope="col">Roll Number</th>
+                                <th scope="col">Department</th>
+                                <th scope="col">Test Score </th>
+                                <th scope="col">Practice Score</th>
+                            </tr>
+                            <tr *ngFor="let data of onGoingLeaderBoard">
+                                <td align="center">{{data?.rank}}</td>
+                                <td>
+                                    {{data?.firstName}} {{data?.lastName}}
+                                </td>
+                                <td>
+                                    {{data?.rollNo}}
+                                </td>
+                                <td>
+                                    {{data?.department}}
+                                </td>
+                                <td>
+                                    {{data?.testScore}}
+                                </td>
+                                <td>
+                                    {{data?.practiceScore}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+            
+                </div>
+            </div>
+
+
+            <div id="menu1" class="tab-pane fade">
+                <div class="col-md-6 gray-box  line-height-20px" *ngFor="let data of courses.completed">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <h3>{{data?.name}}</h3>
+                            <p>{{data?.description}}
+                            </p>
+                            <hr>
+
+                        </div>
+                        <div class="col-md-3" style="padding-top:10px;">
+                            <div class="weeks-stats pull-right"> 
+                                <span style="font-size: 30px; line-height:30px">{{data?.maxModule}}</span>                                
+                                <br>
+                                <b>Modules</b>
+                            </div>
+                        </div>
+
+
+                        <div class="small col-md-12">
+                            <button type="button" class="btn dp-btn-primary" (click)="resume(data._id)">
+                                <span class="glyphicon glyphicon-eye-open"></span> Review</button>
+                            <button type="button" class="btn dp-btn-success pull-right" (click)="getLeaderboard(data._id,'completed')">
+                                <span class="glyphicon glyphicon-tower"></span> LeaderBoard</button>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-6 gray-box  line-height-20px" *ngIf="courses.completed.length===0">
+                    No Courses are finished.
+                </div>
+
+                <div class="col-sm-12" *ngIf="leaderBoard.length != 0">
+                    <h2>Leaderboard</h2>
+                    <!-- <div class="alert alert-danger" *ngIf="students.length == 0">No Students are available.</div> -->
+                    <table class="table-blue-bg table faculty-table table-responsive table-striped table-hover " cellspacing="0" cellpadding="3"
+                        rules="cols">
+                        <tbody>
+                            <tr align="left">
+                                <th scope="col">
+                                    Rank
+                                </th>
+                                <th scope="col">Student Name</th>
+                                <th scope="col">Roll Number</th>
+                                <th scope="col">Department</th>
+                                <th scope="col">Test Score </th>
+                                <th scope="col">Practice Score</th>
+                            </tr>
+                            <tr *ngFor="let data of leaderBoard">
+                                <td align="center">{{data?.rank}}</td>
+                                <td>
+                                    {{data?.firstName}} {{data?.lastName}}
+                                </td>
+                                <td>
+                                    {{data?.rollNo}}
+                                </td>
+                                <td>
+                                    {{data?.department}}
+                                </td>
+                                <td>
+                                    {{data?.testScore}}
+                                </td>
+                                <td>
+                                    {{data?.practiceScore}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+            
+                </div>
+
+            </div>
+        </div>
+
+    <!-- <div class="col-md-4">
+        <div class="row gray-box">line graphs(it will hav time vs performance) report</div>
+    </div> -->
+    
+</div>
+    
+</div>

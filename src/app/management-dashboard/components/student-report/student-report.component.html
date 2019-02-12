@@ -1,0 +1,405 @@
+<div id="band" class="container">
+
+  <div class="row">
+    <h2>Student Reports</h2>
+    <div class="col-md-3 form-group">
+
+      Student Roll Number
+      <input type="text" class="form-control" [(ngModel)]="rollNo">
+      <button [disabled]="!rollNo" (click)="submitRoll()">Submit</button>
+    </div>
+  </div>
+  <div class="row" *ngIf="getKeys(studentDetails).length!=0">
+    <span class="subheader">Student Details</span>
+    <ul class="margin-bottom list-style">
+      <li>Name: {{studentDetails.firstName}} {{studentDetails.lastName}}</li>
+      <li>Roll No: {{studentDetails.rollNo}}</li>
+      <li>Department: {{studentDetails.department}}</li>
+      <li>Year: {{studentDetails.year}}</li>
+      <li>Email: {{studentDetails.email}}</li>
+
+    </ul>
+  </div>
+
+  <ul class="nav nav-tabs card-body bg-info text-white" role="tablist">
+    <li class="nav-item cursor-pointer" [ngClass]="{active:(currentTab==='contestReportTab')}">
+      <a class="nav-link" data-toggle="tab" (click)="tabClicked('contestReportTab')">Contest Report</a>
+    </li>
+    <li class="nav-item cursor-pointer" [ngClass]="{active:(currentTab==='courseReportTab')}">
+      <a class="nav-link" data-toggle="tab" (click)="tabClicked('courseReportTab')">Course Report</a>
+    </li>
+    <li class="nav-item cursor-pointer" [ngClass]="{active:(currentTab==='practiceReportTab')}">
+      <a class="nav-link" data-toggle="tab" (click)="tabClicked('practiceReportTab')">Practice Report</a>
+    </li>
+    <li class="nav-item cursor-pointer" [ngClass]="{active:(currentTab==='labReportTab')}">
+      <a class="nav-link" data-toggle="tab" (click)="tabClicked('labReportTab')">Lab Report</a>
+    </li>
+    <li class="nav-item cursor-pointer" [ngClass]="{active:(currentTab==='examReportTab')}">
+      <a class="nav-link" data-toggle="tab" (click)="tabClicked('examReportTab')">Exam Report</a>
+    </li>
+
+  </ul>
+  <div class="tab-content">
+    <div id="home" class="tab-pane active" *ngIf="currentScreen==='contestReportTab'">
+      <br>
+
+      <div class="row">
+
+        <div class="col-sm-12" *ngIf="!showContestOnId">
+          <div class="col-sm-3">
+
+
+          </div>
+
+          <h2>Upcoming Contests</h2>
+          <div class="alert alert-danger" *ngIf="getKeys(contestReport['upcomingContestDetails']).length == 0">No Upcoming Contests. </div>
+          <table *ngIf="getKeys(contestReport['upcomingContestDetails']).length!=0" class="table-blue-bg table faculty-table table-responsive table-striped table-hover "
+            cellspacing="0" cellpadding="3" rules="cols">
+            <tbody>
+              <tr align="left">
+
+                <th scope="col">Name</th>
+                <th scope="col">Start Date</th>
+                <th scope="col">End Date</th>
+
+              </tr>
+              <tr *ngFor="let key of getKeys(contestReport['upcomingContestDetails'])">
+
+                <td>
+                  <span title="Click to explore" class="cursor-pointer underline" (click)="getContestDetails(key)">{{(contestReport?.upcomingContestDetails[key]?.name) || '-'}}</span>
+                </td>
+                <td>
+                  {{(contestReport?.upcomingContestDetails[key]?.startDate | date:'yyyy-MM-dd HH:mm a':'-0000') || '-'}}
+                </td>
+                <td>
+                  {{(contestReport?.upcomingContestDetails[key]?.endDate | date:'yyyy-MM-dd HH:mm a':'-0000') || '-'}}
+                </td>
+
+              </tr>
+            </tbody>
+          </table>
+
+          <h2>Ongoing Contests</h2>
+          <div class="alert alert-danger" *ngIf="getKeys(contestReport['ongoingContestDetails']).length == 0">No Ongoing Contests. </div>
+          <table *ngIf="getKeys(contestReport['ongoingContestDetails']).length != 0" class="table-blue-bg table faculty-table table-responsive table-striped table-hover "
+            cellspacing="0" cellpadding="3" rules="cols">
+            <tbody>
+              <tr align="left">
+
+                <th scope="col">Name</th>
+                <th scope="col">Start Date</th>
+                <th scope="col">End Date</th>
+
+              </tr>
+              <tr *ngFor="let key of getKeys(contestReport['ongoingContestDetails'])">
+
+                <td>
+                  <span title="Click to explore" class="cursor-pointer underline" (click)="getContestDetails(key)">{{(contestReport?.ongoingContestDetails[key]?.name) || '-'}}</span>
+                </td>
+                <td>
+                  {{(contestReport?.ongoingContestDetails[key]?.startDate | date:'yyyy-MM-dd HH:mm a':'-0000') || '-'}}
+                </td>
+                <td>
+                  {{(contestReport?.ongoingContestDetails[key]?.endDate | date:'yyyy-MM-dd HH:mm a':'-0000') || '-'}}
+                </td>
+
+              </tr>
+            </tbody>
+          </table>
+
+          <h2>Submitted Contests</h2>
+          <div class="alert alert-danger" *ngIf="getKeys(contestReport['submittedContestDetails']).length == 0">No Submitted Contests. </div>
+          <table *ngIf="getKeys(contestReport['submittedContestDetails']).length != 0" class="table-blue-bg table faculty-table table-responsive table-striped table-hover "
+            cellspacing="0" cellpadding="3" rules="cols">
+            <tbody>
+              <tr align="left">
+
+                <th scope="col">Name</th>
+                <th scope="col">Start Date</th>
+                <th scope="col">End Date</th>
+
+              </tr>
+              <tr *ngFor="let key of getKeys(contestReport['submittedContestDetails'])">
+
+                <td>
+                  <span title="Click to explore" (click)="getContestDetails(key)" class="cursor-pointer underline">{{(contestReport?.submittedContestDetails[key]?.name) || '-'}}</span>
+                </td>
+                <td>
+                  {{(contestReport?.submittedContestDetails[key]?.startDate | date:'yyyy-MM-dd HH:mm a':'-0000') || '-'}}
+                </td>
+                <td>
+                  {{(contestReport?.submittedContestDetails[key]?.endDate | date:'yyyy-MM-dd HH:mm a':'-0000') || '-'}}
+                </td>
+
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-sm-12" *ngIf="showContestOnId">
+          <!-- <div class="backDiv margin-bottom">
+            
+
+          </div> -->
+          <h2 class="margin-bottom">Contest Details</h2>
+          <ul class="margin-bottom list-style">
+            <li>Name: {{contestReportOnId['contestDetails']?.name}}</li>
+            <li>Description: {{contestReportOnId['contestDetails']?.description}}</li>
+            <li>Allocated Students: {{contestReportOnId['contestDetails']?.allocatedStudents.length}}</li>
+            <li>Start Date: {{contestReportOnId['contestDetails']?.startDate | date:'yyyy-MM-dd HH:mm a':'-0000'}}</li>
+            <li>End Date: {{contestReportOnId['contestDetails']?.endDate | date:'yyyy-MM-dd HH:mm a':'-0000'}}</li>
+          </ul>
+          <div class="backDiv margin-bottom">
+            <h2 class="display-inline">Submitted Challenges</h2>
+            <button (click)="showContestOnId=false" class="float-right" style="color:black">
+              <i class="fas fa-arrow-left"></i>
+              Back
+            </button>
+          </div>
+          <div *ngIf="getKeys(contestReportOnId['finalChallengeDetails']).length == 0" class="alert alert-danger">No Submissions made. </div>
+          <table *ngIf="getKeys(contestReportOnId['finalChallengeDetails']).length != 0" class="table-blue-bg table faculty-table table-responsive table-striped table-hover "
+            cellspacing="0" cellpadding="3" rules="cols">
+            <tbody>
+              <tr align="left">
+
+                <th scope="col">Name</th>
+                <th scope="col">Number Of Submissions</th>
+                <th scope="col">Score</th>
+                <th scope="col">Execution Time</th>
+
+              </tr>
+              <tr *ngFor="let key of getKeys(contestReportOnId['finalChallengeDetails'])">
+
+                <td>
+                  <span>{{ contestReportOnId?.finalChallengeDetails[key]}}</span>
+                </td>
+                <td>
+                  {{contestReportOnId?.finalSubmissions[key] || '-'}}
+                </td>
+                <td>
+                  {{contestReportOnId?.finalBestScores[key]?.score || '-'}}
+                </td>
+                <td>
+                  {{contestReportOnId?.finalBestScores[key]?.totalExecutionTime || '-'}}
+                </td>
+
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="menu2" class="tab-pane active" *ngIf="currentScreen==='courseReportTab'">
+      <br>
+
+      <div class="col-sm-12" *ngIf="!showCourseOnId">
+        <h2>Course Report</h2>
+        <span class="subheader margin-top">Course Allocated</span>
+        <div *ngIf="getKeys(courseReport['studentCourses']).length == 0" class="alert alert-danger">No Course allocated. </div>
+        <ul *ngIf="getKeys(courseReport['studentCourses']).length != 0" class="list-style">
+          <li title="Click to explore" (click)="getCourseDetails(key)" class="cursor-pointer underline" *ngFor="let key of getKeys(courseReport['studentCourses'])">{{courseReport?.studentCourses[key]?.name}}</li>
+        </ul>
+      </div>
+
+      <div class="col-sm-12" *ngIf="showCourseOnId">
+        <h2 class="margin-bottom">Course Details</h2>
+        <ul class="margin-bottom list-style">
+          <li>Name: {{courseReportOnId.courseDetails?.fullName}}</li>
+          <li>Description: {{courseReportOnId.courseDetails?.description}}</li>
+          <li>Allocated Students: {{courseReportOnId.courseDetails?.allocatedStudents.length}}</li>
+          <li>Allocated Faculties: {{courseReportOnId.courseDetails?.allocatedFaculty.length}}</li>
+
+        </ul>
+        <div class="backDiv margin-bottom">
+          <button (click)="showCourseOnId=false" class="float-right" style="color:black">
+            <i class="fas fa-arrow-left"></i>
+            Back
+          </button>
+        </div>
+        <div *ngIf="getKeys(courseReportOnId['courseProgress']).length == 0" class="alert alert-danger">No Progress made on this course. </div>
+        <table *ngIf="getKeys(courseReportOnId['courseProgress']).length != 0" class="table-blue-bg table faculty-table table-responsive table-striped table-hover "
+          cellspacing="0" cellpadding="3" rules="cols">
+          <tbody>
+            <tr align="left">
+
+              <th scope="col" colspan="2">Course Progress</th>
+            </tr>
+            <tr align="left">
+              <th scope="col">Test Marks</th>
+              <th scope="col">Practice Marks</th>
+            </tr>
+            <tr>
+
+              <td>
+                <span>{{ courseReportOnId?.courseProgress['numberOfModulesCompleted'] * getConstant('PER_MODULE_MARKS')}}</span>
+              </td>
+              <td>
+                {{courseReportOnId?.courseProgress['practiceMarks']}}
+              </td>
+
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div id="menu3" class="tab-pane active" *ngIf="currentScreen==='practiceReportTab'">
+      <br>
+
+
+      <div class="col-sm-12">
+        <h2>Practice Report</h2>
+
+        <div *ngIf="practiceReport.documents.length == 0" class="alert alert-danger">No Submissions made. </div>
+        <table *ngIf="practiceReport.documents.length != 0" class="table-blue-bg table faculty-table table-responsive table-striped table-hover "
+          cellspacing="0" cellpadding="3" rules="cols">
+          <tbody>
+            <tr align="left">
+
+              <th scope="col">Challenge Name</th>
+              <th scope="col">Language</th>
+              <th scope="col">Score</th>
+              <th scope="col">Submitted Time</th>
+              <th scope="col">Execution Time</th>
+            </tr>
+            <tr *ngFor="let report of practiceReport.documents">
+
+              <td>
+                <span>{{practiceReport?.challengDetails[report?.challengeId] }}</span>
+              </td>
+              <td>
+                {{langDesc.languages[report?.language].languageFullName}}
+              </td>
+              <td>
+                {{report.score}}
+              </td>
+              <td>
+                {{report?.submittedTime | date:'yyyy-MM-dd HH:mm a':'-0000'}}
+              </td>
+              <td>
+                {{report?.totalExecutionTime}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <div id="menu4" class="tab-pane active" *ngIf="currentScreen==='labReportTab'">
+      <br>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <select class="form-control" [(ngModel)]="selectedLab" (ngModelChange)="getLabReport()">
+                      <option value="undefined" selected="selected">--Select Lab--</option>
+                      <option *ngFor = 'let lab of labs' [ngValue]="lab">{{lab?.name}}</option>
+                </select>
+        </div>
+      </div>
+
+      <div class="col-sm-12">
+
+        <h2 class="margin-top" *ngIf="studentWiseReport.length != 0">Lab Report For {{studentDetails.firstName}} {{studentDetails.lastName}}</h2>
+        <table *ngIf="studentWiseReport.length != 0" class="table-blue-bg table table faculty-table table-responsive table-striped table-hover "
+          cellspacing="0" cellpadding="3" rules="cols">
+          <tbody>
+            <tr align="left">
+              <th scope="col">Week Number</th>
+              <th scope="col">Description</th>
+              <th scope="col">Attempts</th>
+              <th scope="col">Submission Date</th>
+              <th scope="col">Update</th>
+
+              <!-- <th scope="col">Week2 - to 12 weeks </th>
+              <th scope="col">Average(sort)</th> -->
+            </tr>
+            <tr *ngFor="let report of studentWiseReport">
+              <td class="underline cursor-pointer" (click)="getLabSubmission(report)" data-toggle="modal" data-target="#myModal">{{report?.number}}</td>
+              <td>{{report?.description}}</td>
+              <td>
+                <input type="number" min="0" [(ngModel)]="report.attempts" />
+              </td>
+              <td>{{(report?.lastSubmittedDate | date:'yyyy-MM-dd hh:mm a':'-0000') || '-'}}</td>
+              <td>
+                <button type="button" class="btn btn-success">Update</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+
+    <div id="menu5" class="tab-pane active" *ngIf="currentScreen==='examReportTab'">
+      <br>
+      <div class="col-sm-12">
+        <h2>Exam Report</h2>
+        <div class="alert alert-danger" *ngIf="examReport.length == 0">No Data Available. </div>
+        <table *ngIf="examReport.length!=0" class="table-blue-bg table faculty-table table-responsive table-striped table-hover "
+          cellspacing="0" cellpadding="3" rules="cols">
+          <tbody>
+            <tr align="left">
+              <th scope="col">Exam Name</th>
+              <th scope="col">Duration</th>
+              <th scope="col">Start Date</th>
+              <th scope="col">End Date</th>
+              <th scope="col">Total Questions</th>
+              <th scope="col">Question Attempted</th>
+              <th scope="col">Score</th>
+
+
+
+            </tr>
+            <tr *ngFor="let detail of examReport">
+              <td>{{detail?.name}}</td>
+              <td>{{detail?.duration}}</td>
+              <td>{{detail?.startDate | date : 'yyyy-MM-dd hh:mm a':'-0000'}}</td>
+              <td>{{detail?.endDate | date : 'yyyy-MM-dd hh:mm a':'-0000'}}</td>
+              <td>{{detail?.allocatedQuestions.length}}</td>
+              <td>{{detail?.attemptedQuestions}}</td>
+              <td>{{detail?.score}}</td>
+
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="modal-backdrop fade in" *ngIf="selectedReport" (click)="selectedReport=undefined"></div> -->
+
+<div class="modal fade" id="myModal" role="dialog" >
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Submission Detail</h4>
+      </div>
+      <div class="modal-body">
+        <ng-container *ngIf="selectedReport.submissionId">
+          <p>Week Number : {{submissionReport?.number}}<br> Submitted Time : {{(submissionReport?.submittedTime | date : 'yyyy-MM-dd
+            HH:mm a' : '-0000')}}<br> Attempts : {{submissionReport?.attempt}}<br> Code <br>
+          </p>
+          <pre>
+            <code>
+                {{submissionReport?.code}}
+            </code>
+        </pre>
+        </ng-container>
+        <ng-container *ngIf="!selectedReport.submissionId">
+          <p>
+            No Submission has been made.
+          </p>
+        </ng-container>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,123 @@
+<div id="band" class="container">
+  <div class="col-md-12">
+    <div class="col-md-4  c-clearfix">
+      <div class="panel panel-yellow">
+        <div class="panel-heading">
+          <div class="row">
+            <div class="col-xs-3">
+              <i class="fa fa-graduation-cap fa-5x"></i>
+            </div>
+            <div class="col-xs-9 text-right">
+              <div class="huge">Manage Courses</div>
+              <div>20</div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+
+    <div class="col-md-4  c-clearfix">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <div class="row">
+            <div class="col-xs-3">
+              <i class="fa fa-newspaper-o fa-5x"></i>
+            </div>
+            <div class="col-xs-9 text-right">
+              <div class="huge">Manage Contests</div>
+              <div>22</div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+
+    <div class="col-md-4  c-clearfix">
+      <div class="panel panel-primary">
+        <div class="panel-heading" style="background-color:#337C88">
+          <div class="row">
+            <div class="col-xs-3">
+              <i class="glyphicon glyphicon-user fa-5x"></i>
+            </div>
+            <div class="col-xs-9 text-right">
+              <div class="huge">Manage Users</div>
+              <div>22</div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    <div class="col-md-4  c-clearfix">
+      <div class="panel panel-green">
+        <div class="panel-heading">
+          <div class="row">
+            <div class="col-xs-3">
+              <i class="glyphicon glyphicon-hourglass fa-5x"></i>
+            </div>
+            <div class="col-xs-9 text-right">
+              <div class="huge">Manage Labs</div>
+              <div>1050</div>
+            </div>
+          </div>
+        </div>
+       
+      </div>
+    </div>
+
+    <div class="col-md-4  c-clearfix">
+      <div class="panel panel-red">
+        <div class="panel-heading">
+          <div class="row">
+            <div class="col-xs-3">
+              <i class="fa fa-support fa-5x"></i>
+            </div>
+            <div class="col-xs-9 text-right">
+              <div class="huge">Manage Exams</div>
+              <div >13</div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    <div class="col-md-12"> <button type="button" class="btn btn-danger pull-right" style="margin-bottom:20px" (click)="downloadInput()">Export to XLS</button>
+      <table class="table-blue-bg table table faculty-table table-responsive table-striped table-hover " cellspacing="0" cellpadding="3"
+        rules="cols">
+        <tbody>
+          <tr align="left">
+            <th scope="col">Branch</th>
+            <th scope="col">1st Year</th>
+            <th scope="col">2nd Year</th>
+            <th scope="col">3rd Year</th>
+            <th scope="col">4th Year</th>
+          </tr>
+          <tr *ngFor="let key of getKeys(yearDept)">
+            <td>{{key}}</td>
+            <td>{{yearDept[key][currentYear] || '0'}}</td>
+            <td>{{yearDept[key][secondYear] || '0'}}</td>
+            <td>{{yearDept[key][thirdYear] || '0'}}</td>
+            <td>{{yearDept[key][fourthYear] || '0'}}</td>
+          </tr>
+          <!-- <tr>
+            <td>Civil Engineering </td>
+            <td>9</td>
+            <td>6</td>
+            <td>32</td>
+            <td>43</td>
+          </tr>
+
+          <tr>
+            <td>Electrical and Electronics Engineering </td>
+            <td>32</td>
+            <td>655</td>
+            <td>8987</td>
+            <td>0</td>
+          </tr> -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,27 @@
+<div id="band" class="container" *ngIf="visible">
+  <div id="openModal1" class="modalDialog" *ngIf="type==='message'">
+    <div>
+      <a title="Close" class="close" (click)="close()">X</a>
+      <!-- <h2>Message Heading</h2> -->
+      <p>{{message}}</p>
+      <a>
+        <button class="btn dp-btn-primary" (click)="closeModal()">OK</button>
+      </a>
+    </div>
+  </div>
+
+
+  <div id="openModal2" class="modalDialog" *ngIf="type==='input'">
+    <div>
+      <a title="Close" class="close" (click)="close()">X</a>
+      <!-- <h2>Message Heading</h2> -->
+      <div class="form-group">
+        <label>{{message}}</label>
+        <input class="form-control" [(ngModel)]="userInput">
+      </div>
+      <a>
+        <button class="btn dp-btn-primary" (click)="closeModal()">OK</button>
+      </a>
+    </div>
+  </div>
+</div>

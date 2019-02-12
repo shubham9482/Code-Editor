@@ -1,0 +1,32 @@
+.timepicker-selected, .timepicker-list li:hover, .timepicker-list .timepicker-selected:hover
+{
+    background: #1980EC;
+    color: #fff;
+}
+
+.timepicker-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.timepicker-list li {
+    padding: 3px 0 3px 5px;
+    cursor: pointer;
+    white-space: nowrap;
+    color: #000;
+    list-style: none;
+    margin: 0;
+}
+
+.timepicker-wrapper {
+    overflow-y: auto;
+    height: 150px;
+    width: 6.5em;
+    background: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+    outline: none;
+    z-index: 10001;
+    margin: 0;
+}

@@ -1,0 +1,218 @@
+<div id="band" class="container-course">
+  <div class="dp-lp-lesson-top-header">
+    <h2 style="color: #fff !important;text-align: center;margin-top: 14px;">
+
+      <span [hidden]="!selectedLesson">
+        {{selectedLesson?.lessonName}}
+      </span>
+      <span [hidden]="selectedLesson">
+        {{selectedModuleDesc?.name}}
+      </span>
+    </h2>
+  </div>
+  <div [hidden]="!showModules">
+    <div>
+      <!-- <div class="col-sm-12">
+          <div class="col-sm-3">
+            <h2>Select Course</h2>
+            <div class="form-group">
+  
+              <select class="form-control" [(ngModel)]="selectedCourse" (ngModelChange)="courseChange()">
+                              <option value="">Select Course</option>
+                              <option *ngFor='let course of courses' [ngValue]="course">{{course?.name}}</option>
+                            </select>
+            </div>
+          </div>
+          <button type="button" class="pull-right btn btn-success"><i class="fas fa-arrow-left"></i>&nbsp;&nbsp;Back to Dashboard</button>
+  
+        </div> -->
+      <div class="col-sm-3 row" id="moveNav">
+        <div id="sidebar">
+          <div class="sidebar-header" style="margin-bottom:20px">Modules/lessons
+          </div>
+          <ng-container *ngIf="modules.completedModules.length!=0">
+            <div class="module-cont" *ngFor="let module of modules.completedModules;let i=index">
+
+              <ng-container *ngIf="module._id===selectedModule._id">
+                <h2 class="module-heading">
+                  <a (click)="moduleClicked('completedModules',module)">
+                    <i class="fa fa-pencil-square-o  completed"></i>
+                    {{module?.name}}
+                  </a>
+                </h2>
+
+                <div [attr.id]="'completedModule'+i">
+
+                  <ul class="list-unstyled components">
+                    <li *ngFor="let lesson of module.lessons;let j=index" (click)="lessonClicked(lesson)">
+                      <i class="fa fa-pencil-square-o completed"></i>{{lesson?.lessonName}}
+                    </li>
+                  </ul>
+                </div>
+              </ng-container>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="getKeys(modules.ongoingModule).length!=0">
+
+            <ng-container *ngIf="modules.ongoingModule._id===selectedModule._id">
+              <div class="module-cont">
+                <h2 class="module-heading">
+                  <a (click)="moduleClicked('ongoingModule',modules.ongoingModule)">
+                    <i class="fas fa-calendar-alt ongoing"></i>
+                    {{modules?.ongoingModule?.name}}
+
+                  </a>
+                </h2>
+              </div>
+              <div class="module-cont" id="ongoingModule">
+
+                <ul class="list-unstyled components">
+                  <li *ngFor="let lesson of modules.ongoingModule.lessons;let j=index" (click)="lessonClicked(lesson)">
+                    <i [ngClass]="[(lesson.flag===0) ? 'fas fa-check completed': (lesson.flag===1) ? 'fas fa-calendar-alt' : 'fas fa-lock']"></i>                    {{lesson?.lessonName}}
+
+                  </li>
+                  <!-- <li class="list-group-item">Introduction </li>
+                                    <li class="list-group-item">Content Module</li>
+                                    <li class="list-group-item">Test Modules</li>
+                                    <li class="list-group-item">Dummy Modules</li> -->
+                </ul>
+
+              </div>
+            </ng-container>
+
+          </ng-container>
+          <ng-container *ngIf="modules.laterModules.length!=0">
+            <div class="module-cont" *ngFor="let module of modules.laterModules;let k=index">
+
+
+              <div class="cn-lp-lesson-ar-go-to-next-chapter module-heading cursor-pointer">
+                <!-- <span class="glyphicon glyphicon-plus"></span>  -->
+                {{module?.name}}
+                <i class="fas fa-lock pull-right"></i>
+              </div>
+
+
+              <!--data-toggle="collapse" data-parent="#accordion" [attr.href]="'#laterModules' + k" <div [attr.id]="'laterModules'+k" class="panel-collapse collapse">
+                          <div class="panel-body lesson-body">
+                            <ul class="list-group cursor-pointer">
+                              <li class="list-group-item" *ngFor="let lesson of module.lessons;let l=index">{{lesson?.lessonName}}
+                                  <i class="fas fa-lock pull-right"></i></li>
+                              
+                            </ul>
+                          </div>
+                        </div> -->
+            </div>
+          </ng-container>
+          <button type="button" (click)="practice()" class="btn dp-btn-primary" style="width: 50%;border-radius: 0px;margin-left: 20px;margin-top: 0px;margin-bottom: 0px;margin-right: 0px;"
+            *ngIf="takeTest==='completedModules'">Pratice</button>
+          <button type="button" (click)="practice()" class="btn dp-btn-primary" style="width: 50%;border-radius: 0px;" *ngIf="takeTest==='ongoingModule'">Pratice</button>
+          <button type="button" (click)="test()" class="btn dp-btn-success pull-right" style="width: 50%;border-radius: 0px;" *ngIf="takeTest==='ongoingModule'">Test</button>
+        </div>
+
+        <div id="cn-lp-ar-next-mod-wrap">
+          <div class="cn-lp-lesson-ar-nav-next">
+            Next Module</div>
+          <div class="cn-lp-lesson-ar-next-mod-title"></div>
+          <div id="cn-lp-lesson-ar-go-to-next-chapter">{{nextModuleDesc}}</div>
+          <a class="btn dp-btn-primary" (click)="previousModule()" *ngIf="prevModuleAv">Previous</a>
+          <a class="btn dp-btn-primary" (click)="nextModule()" *ngIf="nextModuleDesc!=='Next Module Unavailable'">Next</a>
+        </div>
+      </div>
+    </div>
+
+
+    <div [hidden]="selectedLesson">
+      <div class="col-sm-9 course-content" id="conetnt-slide">
+
+        <!-- <h1>{{selectedModuleDesc?.name}}</h1> -->
+      </div>
+      <div class="col-sm-9 course-content" id="moduleDesc">
+
+        <!-- {{selectedModuleDesc?.description}} -->
+      </div>
+    </div>
+
+    <div [hidden]="!selectedLesson">
+      <div class="col-sm-9 course-content" id="conetnt-slide">
+        <!-- <h1>{{selectedLesson?.lessonName}}</h1> -->
+      </div>
+      <div id="testId" id="lessonDesc" class="col-sm-9 course-content">
+
+
+        <!-- [innerHTML]="selectedLesson.lessonDescription" {{selectedLesson?.lessonDescription}} [innerHTML]="selectedLesson.lessonDescription" -->
+      </div>
+
+    </div>
+
+  </div>
+  <div style="padding-bottom: 50px; float:right">
+    <button type="button" class="pull btn dp-btn-primary" *ngIf="selectedLesson && showPreviousButton" (click)="previousLesson()">
+      <i class="fas fa-arrow-left"></i>
+    </button>
+    <button type="button" class="pull-right btn dp-btn-primary" *ngIf="selectedLesson" (click)="gotoLessonQuestion()">
+      <i class="fas fa-arrow-right"></i>
+    </button>
+  </div>
+</div>
+
+<div *ngIf="!showModules">
+  <div class="container">
+    <button type="button" class="btn dp-btn-primary pull-right" (click)="goBackToLesson()">Back</button>
+
+    <ng-container *ngFor="let ques of selectedLesson.lessonQuestions;let i=index">
+      <h2>{{i}}. {{ques?.question}}</h2>
+      <br>
+      <ng-container *ngIf="ques.questionType===1">
+        <div class="row" *ngFor="let option of ques.options;let i=index">
+          <div class="col-md-1 text-center">
+            <input class="cursor-pointer" type="checkbox" [(ngModel)]="answers[i]">
+          </div>
+          <div class="col-md-11">{{option}}
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="ques.questionType===0">
+        <div class="row" *ngFor="let option of ques.options;let i=index">
+          <div class="col-md-1 text-center">
+            <input class="cursor-pointer" [(ngModel)]="radioButtonAnswer" type="radio" name="option" [value]="option">
+          </div>
+          <div class="col-md-11">{{option}}
+          </div>
+        </div>
+      </ng-container>
+      <br>
+    </ng-container>
+
+    <!-- <div class="row">
+          <div class="col-md-1 text-center"><input type="checkbox"><span class="ml-2">B.</span></div>
+          <div class="col-md-11">For the routing to work, each interface should be on a different subnet. However, if you are only bridging, and not
+            doing IP routing, then you can configure the two interfaces on the same subnet.
+          </div>
+        </div>
+  
+  
+        <div class="row">
+          <div class="col-md-1 text-center"><input type="checkbox"><span class="ml-2">C.</span></div>
+          <div class="col-md-11">Each interface should be on a different subnet. However, if you are only bridging, and not doing IP routing, then
+            you can configure the two interfaces on the same subnet.
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="col-md-1 text-center"><input type="checkbox"><span class="ml-2">D.</span></div>
+          <div class="col-md-11">No. For the routing to work, each interface should be on a different subnet. However, if you are only bridging, and
+            not doing IP routing, then you can configure the two interfaces on the same subnet.
+          </div>
+        </div> -->
+    <br>
+    <br>
+    <div class="alert alert-danger" *ngIf="!correctAnswer && submitted">
+      <p>Your answer is wrong.</p>
+    </div>
+    <div class="alert alert-success" *ngIf="correctAnswer && submitted">
+      <p>Your answer is correct. Proceed to the next lesson.</p>
+    </div>
+    <button type="button" class="btn dp-btn-success" (click)="checkAnswer()">Submit Answer</button>
+    <button type="button" class="pull-right btn dp-btn-primary " *ngIf="correctAnswer" (click)="nextLesson()">Next Lesson</button>
+  </div>
+</div>

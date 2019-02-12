@@ -1,0 +1,22 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../out-tsc/app",
+    "baseUrl": "./",
+    "module": "es2015",
+    "types": [
+      "node"
+    ],
+    "allowJs": true
+  },
+  // "files": [
+  //   "src/**/*",
+  //   "node_modules/clusterws-client-js/src/index.ts",
+  //   "node_modules/clusterws-client-js/src/utils/types.ts",
+  //   "node_modules/clusterws-client-js/src/utils/functions.ts"
+  // ],
+  "exclude": [
+    "test.ts",
+    "**/*.spec.ts"
+  ]
+}

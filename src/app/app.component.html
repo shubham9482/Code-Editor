@@ -1,0 +1,256 @@
+<nav id="headernav" class="navbar navbar-default navbar-fixed-top" *ngIf="showNav">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand">
+        <img src="../assets/images/logo.png" />
+      </a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <div id="navbar" class="navbar-collapse">
+        <ul class="nav navbar-nav" *ngIf="role==0">
+          <li [ngClass]="{active:(activeTab==='home')}">
+            <a class="dropdown-toggle" routerLink="admin-dashboard">
+              <i class="c-blue-500 ti-home"></i>
+              <span class="home-icon-size glyphicon glyphicon-home"></span>
+            </a>
+          </li>
+          <li [ngClass]="{active:(activeTab==='manageCourse')}">
+            <a class="dropdown-toggle" routerLink="admin-dashboard/manage-course">Manage Courses </a>
+
+          </li>
+
+
+          <li [ngClass]="{active:(activeTab==='manageContest')}">
+            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Manage Contest
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+                <a routerLink="admin-dashboard/create-challenge">Create Challenge</a>
+              </li>
+              <li>
+                <a routerLink="admin-dashboard/edit-challenge">Edit Challange</a>
+              </li>
+              <li>
+                <a routerLink="admin-dashboard/create-contest">Create Contest</a>
+              </li>
+              <li>
+                <a routerLink="admin-dashboard/edit-contest">Edit Contest</a>
+              </li>
+              <li>
+                <a routerLink="admin-dashboard/manage-status">Manage Status</a>
+              </li>
+            </ul>
+            <li [ngClass]="{active:(activeTab==='manageUsers')}">
+              <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Manage Users
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a routerLink="admin-dashboard/add-new">Add New</a>
+                </li>
+                <li>
+                  <a routerLink="admin-dashboard/edit-student">Edit Student</a>
+                </li>
+                <li>
+                  <a routerLink="admin-dashboard/edit-faculty">Edit Faculty</a>
+                </li>
+
+              </ul>
+
+              <li [ngClass]="{active:(activeTab==='manageLabs')}">
+                <a class="dropdown-toggle" routerLink="admin-dashboard/manage-labs">Manage Labs </a>
+              </li>
+              <!-- <li [ngClass]="{active:(activeTab==='manageExams')}"><a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                  aria-expanded="false">Manage Exams <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a routerLink="admin-dashboard/create-exam">Create Exam</a></li>
+                  <li><a routerLink="admin-dashboard/edit-exam">Edit Exam</a></li>
+                </ul>
+              </li> -->
+
+              <li [ngClass]="{active:(activeTab==='manageExams')}">
+                <a class="dropdown-toggle" routerLink="admin-dashboard/create-exam">Manage Exam </a>
+
+              </li>
+        </ul>
+        <ul class="nav navbar-nav" *ngIf="role==1">
+          <li [ngClass]="{active:(activeTab==='home')}">
+            <a class="dropdown-toggle" routerLink="student-dashboard">
+              <i class="c-blue-500 ti-home"></i>
+              <span class="home-icon-size glyphicon glyphicon-home"></span>
+            </a>
+          </li>
+          <li [ngClass]="{active:(activeTab==='labreport')}">
+            <a class="dropdown-toggle" routerLink="student-dashboard/lab-report">
+              <span class="glyphicon glyphicon pr-6 glyphicon-th-list"></span> Lab Reports</a>
+
+          </li>
+
+
+          <li [ngClass]="{active:(activeTab==='exams')}">
+            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" routerLink="student-dashboard/exams">
+              <span class="glyphicon pr-6	 glyphicon-signal"></span>Exams</a>
+          </li>
+          <li [ngClass]="{active:(activeTab==='studentContests')}">
+            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" routerLink="student-dashboard/contests">
+              <span class="glyphicon pr-6	 glyphicon-pencil"></span>Contests</a>
+          </li>
+          <li [ngClass]="{active:(activeTab==='practice')}">
+            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" routerLink="student-dashboard/practice">
+              <span class="glyphicon pr-6	glyphicon-education"></span>Practice</a>
+          </li>
+
+        </ul>
+        <ul class="nav navbar-nav" *ngIf="role==2">
+          <li [ngClass]="{active:(activeTab==='home')}">
+            <a routerLink="management-dashboard">
+              <i class="c-blue-500 ti-home"></i>
+              <span class="home-icon-size glyphicon glyphicon-home"></span>
+            </a>
+          </li>
+          <li [ngClass]="{active:(activeTab==='contestreport')}">
+            <a class="dropdown-toggle" routerLink="management-dashboard/contest-report">Contest Reports</a>
+
+          </li>
+
+
+          <li [ngClass]="{active:(activeTab==='coursereport')}">
+            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" routerLink="management-dashboard/course-report">Course Reports</a>
+
+            <li [ngClass]="{active:(activeTab==='practicereport')}">
+              <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" routerLink="management-dashboard/practice-report">Practice Reports</a>
+              <li [ngClass]="{active:(activeTab==='labreport')}">
+                <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" routerLink="management-dashboard/lab-report">Lab Reports</a>
+                <li [ngClass]="{active:(activeTab==='examreport')}">
+                  <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" routerLink="management-dashboard/exam-report">Exam Reports</a>
+
+                  <li [ngClass]="{active:(activeTab==='studentreport')}">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" routerLink="management-dashboard/student-report">Student Reports</a>
+
+        </ul>
+
+        <ul class="nav navbar-nav" *ngIf="role==3">
+          <li [ngClass]="{active:(activeTab==='home')}">
+            <a class="dropdown-toggle" routerLink="faculty-dashboard">
+              <i class="c-blue-500 ti-home"></i>
+              <span class="home-icon-size glyphicon glyphicon-home"></span>
+            </a>
+          </li>
+          <!-- <li [ngClass]="{active:(activeTab==='courses')}"><a class="dropdown-toggle" routerLink="faculty-dashboard/courses">Courses</a>
+
+          </li> -->
+          <li [ngClass]="{active:(activeTab==='editExam')}">
+            <a class="dropdown-toggle" routerLink="faculty-dashboard/edit-exam">Manage Exam</a>
+
+          </li>
+          <li [ngClass]="{active:(activeTab==='editLabs')}">
+            <a class="dropdown-toggle" routerLink="faculty-dashboard/edit-labs">Manage Labs</a>
+
+          </li>
+
+          <!-- <li [ngClass]="{active:(activeTab==='coursereport')}"><a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" routerLink="management-dashboard/course-report">Course Reports</a>
+
+            <li [ngClass]="{active:(activeTab==='practicereport')}"><a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" routerLink="management-dashboard/practice-report">Practice Reports</a>
+              <li [ngClass]="{active:(activeTab==='labreport')}"><a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
+                  routerLink="management-dashboard/lab-report">Lab Reports</a>
+                <li [ngClass]="{active:(activeTab==='examreport')}"><a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
+                    routerLink="management-dashboard/exam-report">Exam Reports</a>
+
+                  <li [ngClass]="{active:(activeTab==='studentreport')}"><a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
+                      routerLink="management-dashboard/student-report">Student Reports</a> -->
+
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right" *ngIf="role != 4">
+          <!-- <li class="active"><a href="./">Profile Pic <span class="sr-only">(current)</span></a></li> -->
+          <!-- <li><a href="../navbar-static-top/">Role</a></li> -->
+          <li class="dropdown" *ngIf="role == 1">
+
+            <div class="notifications dropdown-toggle" type="button" data-toggle="dropdown">
+              <span class="notifications-count">{{notifications.length}}</span>
+              <i class="glyphicon glyphicon-bell"></i>
+            </div>
+            <ul class="dropdown-menu notify-drop">
+              <div class="notify-drop-title">
+                <div class="row">
+                  <div class="col-md-6 col-sm-6 col-xs-6" style="color:#000">Notifications</div>
+                  <!-- <div class="col-md-6 col-sm-6 col-xs-6 text-right"><a href="" class="rIcon allRead" data-tooltip="tooltip" data-placement="bottom" title="tümü okundu."><i class="fa fa-dot-circle-o"></i></a></div> -->
+                </div>
+              </div>
+              <!-- end notify title -->
+              <!-- notify content -->
+              <div class="drop-content">
+                <li *ngFor="let notification of notifications" (click)="createSession(notification)">
+                  <div class="col-md-3 col-sm-3 col-xs-3">
+                    <div class="notify-img">
+                      <img src="http://placehold.it/45x45" alt="">
+                    </div>
+                  </div>
+                  <div class="col-md-9 col-sm-9 col-xs-9 pd-l0">
+                    <a style="text-decoration:none">
+                      {{notification?.message}}
+                    </a>
+                  </div>
+                </li>
+              </div>
+            </ul>
+
+          </li>
+          <li>
+            <a class="dropdown-toggle" type="button" data-toggle="dropdown">{{name}}
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li *ngIf="role == 1">
+                <!-- [ngClass]="{active:(activeTab==='profile')}" -->
+                <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" routerLink="student-dashboard/profile-settings">Profile Setting</a>
+              </li>
+              <li>
+                <a class="cursor-pointer" (click)="redirect()">Logout</a>
+              </li>
+
+            </ul>
+
+          </li>
+          <li style="padding-right: 15px;">
+            <a class="cursor-pointer">Community</a>
+          </li>
+
+        </ul>
+        <ul class="nav navbar-nav navbar-right" *ngIf="role == 4">
+          <li>
+            <a class="cursor-pointer">About Us</a>
+          </li>
+          <li>
+            <a>|</a>
+          </li>
+          <li>
+            <a class="cursor-pointer">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<router-outlet></router-outlet>
+<footer id="footer" *ngIf="showNav">
+
+  <div style="text-align:left" class="col-md-8"> &copy; 2018-2022 Code Now, Inc. All rights reserved.</div>
+  <div style="text-align:right" class="col-md-4 pull-right">
+    <a href="#" class="fa fa-facebook"></a>
+    <a href="#" class="fa fa-twitter"></a>
+    <a href="#" class="fa fa-google"></a>
+    <a href="#" class="fa fa-linkedin"></a>
+    <a href="#" class="fa fa-youtube"></a>
+  </div>
+
+</footer>
+<div class="loading" *ngIf="load"></div>
+<app-modal [(visible)]="modalDetails.visible" [type]="modalDetails.type" [message]="modalDetails.message" (sendData)="receiveData($event)"></app-modal>

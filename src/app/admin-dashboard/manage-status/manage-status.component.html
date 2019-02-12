@@ -1,0 +1,245 @@
+<div id="band" class="container">
+
+  <ul class="nav nav-tabs card-body bg-info text-white" role="tablist">
+    <!-- <li class="nav-item">
+      <a class="nav-link active" data-toggle="tab" href="#home">Student Allocation</a>
+    </li> -->
+    <li class="nav-item active">
+      <a class="nav-link " data-toggle="tab" href="#menu1" (click)="tabClicked('active-list')">Active List</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#menu2" (click)="tabClicked('finished-list')">Finished List</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="tab" href="#menu3" (click)="tabClicked('locked-list')">Locked List</a>
+    </li>
+  </ul>
+  <div class="tab-content">
+
+    <div id="menu1" class="tab-pane active">
+      <br>
+
+      <div class="row">
+
+        <div class="col-sm-3">
+          <h2>Active List</h2>
+          <div class="form-group">
+            <input type="text" [(ngModel)]="contest" placeholder="Search Contest" (input)="search(contest)" (focus)="search(contest)"
+            />
+            <!-- <button class="btn btn-primary m-2" style="margin-left:15px" (click)="search(contest.value,'contest')">Search</button> -->
+            <div class="alert alert-danger margin-top" *ngIf="noContestSearchResultString">{{noContestSearchResultString}}</div>
+            <ul class="filterList" *ngIf="searchResults.length!=0" style="width: 55% !important;">
+              <li (click)="searchClicked(searchResult)" *ngFor="let searchResult of searchResults">{{searchResult.name}}</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-sm-12" *ngIf="currentTab==='active-list'">
+          <h2>List Of Students</h2>
+          <div class="alert alert-danger" *ngIf="studentList.length==0">No Students are active.</div>
+          <table *ngIf="studentList.length!=0" class="table-blue-bg table faculty-table table-responsive table-striped table-hover "
+            cellspacing="0" cellpadding="3" rules="cols">
+            <tbody>
+              <tr align="left">
+                <th scope="col"></th>
+                <th scope="col">Student Name</th>
+                <th scope="col">Roll Number</th>
+                <th scope="col">Department</th>
+                <th scope="col">Year </th>
+
+              </tr>
+              <tr *ngFor="let student of studentList;let i=index">
+                <td align="center">{{i}}</td>
+                <td>
+                  {{student.firstName}} {{student.lastName}}
+                </td>
+                <td>
+                  {{student.rollNo}}
+                </td>
+                <td>
+                  {{student.department}}
+                </td>
+                <td>
+                  {{student.year}}
+                </td>
+
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="col-sm-12" *ngIf="currentTab==='finished-list'">
+          <h2>List Of Students</h2>
+          <div class="alert alert-danger" *ngIf="studentList.length==0">None of the Students have finished.</div>
+          <table *ngIf="studentList.length!=0" class="table-blue-bg table faculty-table table-responsive table-striped table-hover "
+            cellspacing="0" cellpadding="3" rules="cols">
+            <tbody>
+              <tr align="left">
+                <th scope="col">Rank</th>
+                <th scope="col">Student Name</th>
+                <th scope="col">Roll Number</th>
+                <th scope="col">Department</th>
+                <th scope="col">Year </th>
+                <th scope="col">Score </th>
+              </tr>
+              <tr *ngFor="let student of studentList">
+                <td align="center">{{student.rank}}</td>
+                <td>
+                  {{student.firstName}} {{student.lastName}}
+                </td>
+                <td>
+                  {{student.rollNo}}
+                </td>
+                <td>
+                  {{student.department}}
+                </td>
+                <td>
+                  {{student.year}}
+                </td>
+                <td>
+                  {{student.submittedContests[0].score}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="col-sm-12" *ngIf="currentTab==='locked-list'">
+          <h2>List Of Students</h2>
+          <div class="alert alert-danger" *ngIf="studentList.length==0">No Students are locked.</div>
+          <table *ngIf="studentList.length!=0" class="table-blue-bg table faculty-table table-responsive table-striped table-hover "
+            cellspacing="0" cellpadding="3" rules="cols">
+            <tbody>
+              <tr align="left">
+                <th scope="col">
+                  <input id="selectAll" type="checkbox" [(ngModel)]="selectAll" (ngModelChange)="rowChecked('allrowsselected','')">
+                  <label for="selectAll">Select all</label>
+                </th>
+                <th scope="col">Student Name</th>
+                <th scope="col">Roll Number</th>
+                <th scope="col">Department</th>
+                <th scope="col">Year</th>
+                <th scope="col">Time Left</th>
+              </tr>
+              <tr *ngFor="let student of studentList">
+                <td align="center">
+                  <input type="checkbox" [(ngModel)]="student.checked" (ngModelChange)="rowChecked('',student)">
+                </td>
+                <td>
+                  {{student.firstName}} {{student.lastName}}
+                </td>
+                <td>
+                  {{student.rollNo}}
+                </td>
+                <td>
+                  {{student.department}}
+                </td>
+                <td>
+                  {{student.year}}
+                </td>
+                <td>
+                  <input type="number" [(ngModel)]="student.timeLeft" (input)="timeLeftChange(student)">
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <button type="submit" class="btn btn-info m-2" style="padding: 10px 62px;" (click)="unlock()" [disabled]="unlockList.length===0">Unlock</button>
+        </div>
+      </div>
+    </div>
+    <!-- <div id="menu2" class="tab-pane fade">
+      <br>
+      <div class="row">
+        <div class="col-sm-3">
+          <h2>Finished List</h2>
+
+          <div class="form-group">
+            <input type="text" [(ngModel)]="contest" placeholder="Search Contest" (input)="search(contest)" (focus)="search(contest)"
+            />
+            <div class="alert alert-danger margin-top" *ngIf="noContestSearchResultString">{{noContestSearchResultString}}</div>
+            <ul class="filterList" *ngIf="searchResults.length!=0" style="width: 55% !important;">
+              <li (click)="searchClicked(searchResult)" *ngFor="let searchResult of searchResults">{{searchResult.name}}</li>
+            </ul>
+          </div>
+        </div>
+        
+      </div>
+    </div> -->
+
+    <!-- <div id="menu3" class="tab-pane fade">
+      <br>
+      <div class="row">
+        <div class="col-sm-3">
+          <h2>Locked List</h2>
+
+          <div class="form-group">
+            <input type="text" [(ngModel)]="contest" placeholder="Search Contest" (input)="search(contest)" (focus)="search(contest)"
+            />
+            <div class="alert alert-danger margin-top" *ngIf="noContestSearchResultString">{{noContestSearchResultString}}</div>
+            <ul class="filterList" *ngIf="searchResults.length!=0" style="width: 55% !important;">
+              <li (click)="searchClicked(searchResult)" *ngFor="let searchResult of searchResults">{{searchResult.name}}</li>
+            </ul>
+          </div>
+        </div>
+        
+      </div>
+    </div> -->
+    <!-- <div id="menu3" class="tab-pane fade">
+      <br>
+      <div class="row">
+        <div class="col-md-3">
+          <h2>Locked List</h2>
+          <form action="#">
+            <div class="form-group col-md-">
+              <input class="form-control" placeholder="Name/UserId">
+              <br/>
+              <button type="submit" class="btn btn-info m-2" style="padding: 10px 62px;">Search Student</button>
+
+            </div>
+        </div>
+        <div class="col-md-12">
+          <h2>Fineshed/Submit List</h2>
+
+          <table class="table-blue-bg table faculty-table table-responsive table-striped table-hover " cellspacing="0" cellpadding="3"
+            rules="cols">
+            <tbody>
+              <tr align="left">
+                <th scope="col"></th>
+                <th scope="col">Student Name</th>
+                <th scope="col">Roll Number</th>
+                <th scope="col">Department</th>
+                <th scope="col">Year
+                  <input type="checkbox"> Slect all</th>
+
+
+
+              </tr>
+              <tr>
+                <td align="center">
+                  <input type="checkbox">
+                </td>
+                <td>
+                  Swapna Thokala
+                </td>
+                <td>
+                  121211
+                </td>
+                <td>
+                  CMRCET
+                </td>
+                <td>
+                  2015
+                </td>
+
+
+
+              </tr>
+            </tbody>
+          </table>
+          <button type="submit" class="btn btn-info m-2" style="padding: 10px 62px;">Unlock</button>
+        </div>
+      </div>
+
+    </div> -->
+
+  </div>
+</div>

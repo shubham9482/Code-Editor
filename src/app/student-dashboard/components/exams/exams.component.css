@@ -1,0 +1,16 @@
+.glyphicon-eye-open {
+    padding-right: 10px;
+}
+.gray-box{
+    min-height: 200px;
+}
+
+.container{
+        padding: 60px 0px;
+}
+
+.question-bg[_ngcontent-c1] {
+    background: #fff;
+    padding: 19px 22px;
+    margin: 50px -27px 27px 20px;
+}

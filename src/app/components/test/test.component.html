@@ -1,0 +1,282 @@
+<div class="CodeMirror-scroll">
+
+  <!-- <div class="left-dropdown">
+        <button class="left-dropbtn">Levels <span class="glyphicon glyphicon-th-list"></span></button>
+        <div class="left-dropdown-content">
+          <a href="#" class="btn-primary"> <span class="glyphicon glyphicon-ok"></span> &nbsp;&nbsp;Easy Level </a>
+          <a href="#" class="btn-info"> <span class="glyphicon glyphicon-ok"></span> &nbsp;&nbsp;Medium Level</a>
+          <a href="#" class="btn-danger"> <span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp; High Level</a>
+        </div>
+      </div> -->
+  <div class="col-md-4 pad-0 height100 marg-1" id="leftPanel">
+    <div class="panel panel-default border-radius-0 height100">
+      <div class="panel-heading border-radius-0 border-radius-0">
+        <!-- <button class="btn btn-primary pull-left" >More Menu</button> -->
+        <i class="fas fa-bars pull-left cursor-pointer" title="Click to change challenge." data-toggle="drawer" data-target="#drawer-3"></i>
+        <i class="fa fa-columns" style="margin-right:10px;"></i>Introduction
+
+        <div class="col-md-2  pull-right row" *ngIf="details.type === 'practice'">
+          <button type="button" (click)="back()" style="margin-top: -5px;" class="btn pull-right btn-primary border-radius-0">
+            <i class="fas fa-arrow-left"></i> Back</button>
+        </div>
+      </div>
+      <div class="overflow-wrap panel-body panel-height innerHeight">
+        <span [innerHTML]="selectedChallenge.description"></span>
+        <div class="gray-heading">Input Format</div>
+        <span [innerHTML]="selectedChallenge.input"></span>
+        <div class="gray-heading">Output Format</div>
+        <span [innerHTML]="selectedChallenge.output"></span>
+        <!-- {{selectedChallenge?.output}} -->
+        <div class="gray-heading">Constraints</div>
+        <span [innerHTML]="selectedChallenge.constraints"></span>
+        <!-- {{selectedChallenge?.constraints}} -->
+        <ng-container *ngFor="let sample of selectedChallenge.testcases;let i=index">
+          <div class="gray-heading">Sample Input&nbsp;
+            <span *ngIf="selectedChallenge.testcases.length>1">{{i}}</span>
+          </div>
+          <pre>
+              <code>
+                  {{sample?.input}}
+              </code>
+          </pre>
+          <div class="gray-heading">Sample Output&nbsp;
+            <span *ngIf="selectedChallenge.testcases.length>1">{{i}}</span>
+          </div>
+          <pre> 
+              <code>
+                  {{sample?.output}}
+              </code>
+          </pre>
+        </ng-container>
+        <div class="gray-heading"> Explanation</div>
+        <span [innerHTML]="selectedChallenge.explanation"></span>
+      </div>
+      <!-- <div class="panel-footer">Panel Footer <button type="button" class="btn btn-info" style="float: right;"><i style="margin-right:10px;"  class="glyphicon glyphicon-fast-forward"></i>Next Question</button></div> -->
+    </div>
+  </div>
+  <div class="col-md-4 pad-0 height100 marg-1" id="midPanel">
+    <div class="panel panel-default border-radius-0 height100">
+      <div class="panel-heading border-radius-0">
+        &nbsp;
+        <select *ngIf="selectedChallenge.languagesApplicable.length>1" [(ngModel)]="langCode" style="width: 30%;color: #555;background-color: #fff;height: 28px;">
+          <option *ngFor='let code of selectedChallenge.languagesApplicable' [ngValue]="code">{{languageDesc[code]?.languageName}}</option>
+        </select>
+        <span class="pull-right">
+          <span *ngIf="details.type === 'test'" [ngClass]="{timerRed:(minutes<=1)}">
+            Time Remaining :
+            <span *ngIf="minutes<10">0</span>{{minutes}}:
+        <span *ngIf="seconds<10">0</span>{{seconds}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </span>
+        <span class="cursor-pointer glyphicon glyphicon-fullscreen" style="margin: 5px;" (click)="expandMid()"></span>
+        </span>
+      </div>
+      <!-- <div class="panel-body code-editor-bg panel-height" style="height: 86%;">
+      </div> -->
+      <ace-editor #editor class="panel-body code-editor-bg panel-height" style="height: 89%;" [(text)]="selectedChallenge.initialCode[selectedChallenge.languagesApplicable.indexOf(langCode)]"
+        [mode]="languageDesc[langCode].mode" [theme]="'ambiance'" [options]="options" [readOnly]="false" [autoUpdateContent]="true"
+        [durationBeforeCallback]="1000" >
+      </ace-editor>
+      <textarea placeholder="Enter custom input" *ngIf="customInput" [(ngModel)]="customInputText" class="form-control custom-text-area"
+        rows="5"></textarea>
+      <div class="panel-footer" style="padding: 5px 15px; background:#201e2f">
+        <div class="row">
+          <div class="col-md-2 ">
+            <button type="button" (click)="run()" class="btn btn-success run-btn border-radius-0" style="margin: -9px -15px -15px -15px;
+        padding: 13px;
+        border: 0px;">
+              <i style="margin-right:10px;" class="glyphicon glyphicon-ok-sign"></i>Run</button>
+
+          </div>
+          <div class="col-md-3 "></div>
+          <div class="col-md-1">
+            <button (click)="customInput=!customInput" type="button" class="btn btn-Primary run-btn border-radius-0" style="margin: -9px -15px -15px -15px;
+        padding: 13px;border: 0px;">
+              <i style="margin-right:10px;" class="glyphicon glyphicon-pencil"></i>Custom Input</button>
+          </div>
+          <div class="col-md-2 "></div>
+          <div class="col-md-2  pull-right row">
+            <button type="button" (click)="submit()" style="
+       margin-top: -5px;
+   " class="btn pull-right btn-primary border-radius-0">
+              <i style="margin-right:10px;" class="glyphicon glyphicon-check"></i>Submit</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4 pad-0 border-radius-0 height100 marg-1" id="rightPanel">
+    <div class="panel panel-default height100 border-radius-0">
+      <div class="panel-heading border-radius-0">
+        <button (click)="customInputText='';customInput=false" type="button" class="btn btn-danger" style="padding: 2px 10px">
+          <span style="margin-right:10px;" class="glyphicon glyphicon-refresh" aria-hidden="true"></span>Reset Custom Input</button>        Output
+      </div>
+
+      <div class="panel-body panel-height" style="height: 89%;">
+        <ng-container *ngIf="executionResult">
+          <ng-container *ngIf="executionResult.compiled === false">
+            <div class="gray-heading">
+              <span style="color:red">Compilation Error!</span>
+            </div>
+            <span style="color:red">
+              {{executionResult?.compiledErrorMessage}}
+            </span>
+          </ng-container>
+          <ng-container *ngFor="let result of executionResult.stdout;let i=index">
+
+            <ng-container *ngIf="tempCustomInputText">
+              <div class="gray-heading">Testcase&nbsp;
+              </div>
+              <strong>
+                  Input:
+                </strong>
+              <span>
+                  {{tempCustomInputText}}
+                </span>
+              <br>
+              <!-- <strong>
+                  Output:
+                </strong>
+                <span [innerHTML]="selectedChallenge.output">
+                </span> -->
+
+              <strong>
+                  Output:
+                </strong>
+              <span>
+                  {{result}}
+                </span>
+            </ng-container>
+            <ng-container *ngIf="!tempCustomInputText">
+              <div class="gray-heading">Testcase&nbsp;
+                <span *ngIf="selectedChallenge.testcases.length>1">{{i}}</span>
+              </div>
+              <strong>
+                      Input:
+                    </strong>
+              <span [innerHTML]="selectedChallenge.testcases[i].input">
+                      
+                    </span>
+              <br>
+              <strong>
+                  Expected Output:
+                </strong>
+              <span [innerHTML]="selectedChallenge.testcases[i].output">
+                </span>
+              <br>
+              <strong>
+                  Original Output:
+                </strong>
+              <span>
+                  {{result}}
+                </span>
+            </ng-container>
+
+          </ng-container>
+        </ng-container>
+        <ng-container *ngIf="!executionResult && executing">
+          <h2 style="color:black">
+            Processing...
+          </h2>
+        </ng-container>
+
+        <ng-container *ngIf="submissions.length!=0">
+          <div class="gray-heading">Submissions</div>
+          <!-- <div class="col-md-4"> -->
+          <div class="pratice-v-scroll">
+            <table id="submissionTable" class="table-blue-bg table faculty-table table-responsive table-striped table-hover " cellspacing="0"
+              cellpadding="3" rules="cols">
+              <tbody>
+                <tr>
+                  <th>
+
+                  </th>
+                  <th>
+                    SCORE
+                  </th>
+                  <th>
+                    LANGUAGE
+                  </th>
+                  <th>
+                    TIME
+                  </th>
+                  <th>
+                    CODE
+                  </th>
+                </tr>
+                <tr *ngFor="let submission of submissions;let i=index">
+                  <td class="cursor-pointer underline">
+                    <a *ngIf="rowButton==='add' || (rowButton==='remove' && submissionId!==submission._id)" class="cursor-pointer">
+                      <span class="glyphicon glyphicon-plus-sign" (click)="addRow(i,submission)"></span>
+                    </a>
+                    <a *ngIf="rowButton==='remove' && submissionId===submission._id" class="cursor-pointer">
+                      <span class="glyphicon glyphicon-minus-sign" (click)="removeRow(i)"></span>
+                    </a>
+                  </td>
+                  <td> {{submission.score}} </td>
+                  <td> {{languageDesc[submission.language].languageName}}</td>
+                  <td> {{(submission.submittedTime | date:'yyyy-MM-dd HH:mm a':'-0000') }}</td>
+                  <td>
+                    <button type="button" class="btn btn-primary" (click)="selectedChallenge.initialCode[selectedChallenge.languagesApplicable.indexOf(langCode)]=submission.code">
+                      Get Code
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </ng-container>
+        <!-- </div> -->
+      </div>
+      <div class="panel-footer" *ngIf="details.type === 'test'">
+        <div class="col-md-2  pull-right row">
+          <button type="button" (click)="unlock()" style="margin-top: -10px;" class="btn pull-right btn-primary border-radius-0">
+            <i style="margin-right:10px;" class="fas fa-unlock-alt"></i>Unlock Module</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class=""></div>
+</div>
+<div class="drawer" id="drawer-3">
+  <div class="drawer-dialog">
+    <div class="drawer-header">
+      <h4>Challenges</h4>
+    </div>
+    <div class="list-group">
+      <ul class="list-style">
+        <ng-container *ngIf="details.type === 'test'">
+          <li class="btn-success">Easy</li>
+          <li *ngFor="let challenge of testChallenges" class="cursor-pointer">
+            <a class="list-group-item" (click)="changeChallenge(challenge)" *ngIf="challenge.difficulty===0" [ngClass]="{selected:(selectedChallenge.name===challenge.name)}">{{challenge?.name}}</a>
+          </li>
+
+          <li class="btn-warning">Medium</li>
+          <li *ngFor="let challenge of testChallenges" class="cursor-pointer">
+            <a class="list-group-item" (click)="changeChallenge(challenge)" *ngIf="challenge.difficulty===1" [ngClass]="{selected:(selectedChallenge.name===challenge.name)}">{{challenge?.name}}</a>
+          </li>
+
+          <li class="btn-danger">Hard</li>
+          <li *ngFor="let challenge of testChallenges" class="cursor-pointer">
+            <a class="list-group-item" (click)="changeChallenge(challenge)" *ngIf="challenge.difficulty===2" [ngClass]="{selected:(selectedChallenge.name===challenge.name)}">{{challenge?.name}}</a>
+          </li>
+
+        </ng-container>
+        <ng-container *ngIf="details.type === 'practice'">
+          <li *ngFor="let challenge of testChallenges" class="cursor-pointer">
+            <a class="list-group-item" (click)="changeChallenge(challenge)" [ngClass]="{selected:(selectedChallenge.name===challenge.name)}">{{challenge?.name}}</a>
+          </li>
+        </ng-container>
+
+
+      </ul>
+    </div>
+    <!-- <div class="drawer-footer">
+    <button class="btn btn-default" data-dismiss="drawer">Close</button>
+    </div> -->
+  </div>
+</div>
+<!-- <a href="#" class="btn-primary"> <span class="glyphicon glyphicon-ok"></span> &nbsp;&nbsp;Easy Level </a>
+          <a href="#" class="btn-info"> <span class="glyphicon glyphicon-ok"></span> &nbsp;&nbsp;Medium Level</a>
+          <a href="#" class="btn-danger"> <span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp; High Level</a> -->

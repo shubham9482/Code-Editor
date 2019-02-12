@@ -1,0 +1,146 @@
+<div id="band" class="container">
+
+  <!-- <div class="row">
+    <div class="col-sm-4">
+      <h2>Create Challenge</h2>
+
+      <div class="form-group">
+
+        Challenge Name<input class="form-control" type="text"> 
+        Description         
+        Input<app-ngx-editor [placeholder]="'Enter text here...'" [spellcheck]="true" [(ngModel)]="htmlContent"></app-ngx-editor> 
+        Output<app-ngx-editor [placeholder]="'Enter text here...'" [spellcheck]="true" [(ngModel)]="htmlContent"></app-ngx-editor> 
+        Constraints<app-ngx-editor [placeholder]="'Enter text here...'" [spellcheck]="true" [(ngModel)]="htmlContent"></app-ngx-editor> 
+        Explaination<app-ngx-editor [placeholder]="'Enter text here...'" [spellcheck]="true" [(ngModel)]="htmlContent"></app-ngx-editor> 
+        Tags<input class="form-control" type="text">
+        <div class="form-group">
+          <label>Dificulty</label>
+          <select type="text" class="form-control">
+              <option>Easy</option>
+              <option>Medium</option>
+              <option>Hard</option>
+            </select>
+        </div>
+        <div class="form-group">
+          <div class="dropdown">
+            <button class="form-control dropdown-toggle" type="button" data-toggle="dropdown">Language
+                    <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+              <li><a><input type="checkbox" />C</a></li>
+              <li><a><input type="checkbox" />C++</a></li>
+              <li><a><input type="checkbox" />Java</a></li>
+              <li><a><input type="checkbox" />Python 2.7</a></li>
+              <li><a><input type="checkbox" />Python 3.4</a></li>
+            </ul>
+          </div>
+        </div>
+        Timeout<input class="form-control" type="number" required /> Course Completion
+        <input type="radio" value=true name="codeComplete" required> Yes
+        <input type="radio" value=false name="codeComplete" required> No
+    </div>
+  </div> -->
+
+  <div class="tab-content">
+    <div id="home" class=" tab-pane active">
+      <br>
+      <div class="row">
+        <div class="col-sm-6">
+          <h2>Create Challenge</h2>
+
+          <div class="form-group">
+            <label>Challenge Name</label>
+            <input type="text" [(ngModel)]="challengeName" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <app-ngx-editor [placeholder]="'Enter text here...'" [config]="editorConfig" [spellcheck]="true" [(ngModel)]="description"></app-ngx-editor>
+          </div>
+          <div class="form-group">
+            <label>Input</label>
+            <app-ngx-editor [placeholder]="'Enter text here...'" [config]="editorConfig" [spellcheck]="true" [(ngModel)]="input"></app-ngx-editor>
+          </div>
+          <div class="form-group">
+            <label>Output</label>
+            <app-ngx-editor [placeholder]="'Enter text here...'" [config]="editorConfig" [spellcheck]="true" [(ngModel)]="output"></app-ngx-editor>
+          </div>
+
+          <div class="form-group">
+            <label>Constraints</label>
+            <app-ngx-editor [placeholder]="'Enter text here...'" [config]="editorConfig" [spellcheck]="true" [(ngModel)]="constraints"></app-ngx-editor>
+          </div>
+
+          <div class="form-group">
+            <label>Explanation</label>
+            <app-ngx-editor [placeholder]="'Enter text here...'" [config]="editorConfig" [spellcheck]="true" [(ngModel)]="explanation"></app-ngx-editor>
+          </div>
+
+          <!-- <div class="form-group">
+            <label>Tags(comma Separated)</label>
+            <input type="text" class="form-control" [(ngModel)]="tags">
+          </div> -->
+          <div class="form-group">
+            <!--  -->
+            <mat-form-field class="demo-chip-list">
+              <mat-chip-list #chipList>
+                <mat-chip *ngFor="let tag of tags" [selectable]="selectable" [removable]="removable" (removed)="remove(tag)">
+                  {{tag}}
+                  <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                </mat-chip>
+                <input placeholder="Tags" #tagInput [formControl]="tagCtrl" [matAutocomplete]="auto" [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                  (input)="tagValueEntered(tagInput.value)" (focus)="tagValueEntered(tagInput.value)" [matChipInputAddOnBlur]="addOnBlur"
+                  (matChipInputTokenEnd)="add($event)" />
+              </mat-chip-list>
+              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                <mat-option *ngFor="let filteredTag of filteredTags" [value]="filteredTag">
+                  {{ filteredTag }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+            <!--  -->
+          </div>
+          <div class="form-group">
+            <label>Difficulty</label>
+            <select type="text" class="form-control" [(ngModel)]="difficulty">
+              <option [value]=0>Easy</option>
+              <option [value]=1>Medium</option>
+              <option [value]=2>Hard</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <div class="dropdown">
+              <button class="form-control dropdown-toggle" type="button" data-toggle="dropdown">Languages Applicable
+            <span class="caret"></span></button>
+              <ul class="dropdown-menu">
+                <li><a><input type="checkbox" [(ngModel)]="language[0]" />C</a></li>
+                <li><a><input type="checkbox" [(ngModel)]="language[1]"/>C++</a></li>
+                <li><a><input type="checkbox" [(ngModel)]="language[2]"/>Java</a></li>
+                <li><a><input type="checkbox" [(ngModel)]="language[3]"/>Python 2.7</a></li>
+                <li><a><input type="checkbox" [(ngModel)]="language[4]"/>Python 3.4</a></li>
+              </ul>
+            </div>
+          </div>
+          Timeout<input class="form-control" type="number" [(ngModel)]="timeout" style="margin-bottom:15px" /> Code Completion:&nbsp;
+          <input type="radio" value=true name="codeComplete" required [(ngModel)]="codeCompletion"> Yes
+          <input type="radio" value=false name="codeComplete" required [(ngModel)]="codeCompletion"> No
+
+
+
+          <div><button class="btn btn-primary m-2" style="margin-top:15px" (click)="submit()" [disabled]="!challengeName">Create Challenge</button></div>
+
+          <div class="margin-top alert alert-success" *ngIf="submitted">
+            <p>Challenge Created.</p>
+          </div>
+          <div class="margin-top alert alert-danger" *ngIf="error">
+            <p>Something Went Wrong.</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+
+  </div>
+
+
+</div>

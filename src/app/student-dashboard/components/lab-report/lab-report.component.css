@@ -1,0 +1,31 @@
+h3{
+  font-size: 24px !important;
+  letter-spacing: 0px;
+  margin: 10px 0 20px 0;
+}
+
+.glyphicon-eye-open {
+padding-right: 10px;
+}
+.line-height-20px {
+line-height: 20px;
+}
+
+.gray-box {
+background: #fbfbfb;
+border: 1px solid #eaeaea;
+border-radius: 2px;
+
+padding-bottom: 15px;
+}
+
+.hidden-content
+{
+height: 60px !important;
+overflow: hidden !important;
+}
+
+.show-content
+{
+height: auto !important  
+}

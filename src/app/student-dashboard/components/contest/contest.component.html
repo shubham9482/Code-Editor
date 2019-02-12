@@ -1,0 +1,209 @@
+<div id="band" class="container">
+  <h2>Contests</h2>
+  <ul class="nav nav-tabs card-body bg-info text-white" role="tablist">
+    <li class="nav-item cursor-pointer" [ngClass]="{active:(currentTab==='upcoming')}" (click)="tabClicked('upcoming')">
+      <a class="nav-link">Upcoming</a>
+    </li>
+    <li class="nav-item cursor-pointer" [ngClass]="{active:(currentTab==='completed')}" (click)="tabClicked('completed')">
+      <a class="nav-link">Completed</a>
+    </li>
+
+
+  </ul>
+  <div class="tab-content">
+    <div id="home" class=" tab-pane active" *ngIf="currentTab==='upcoming'">
+      <h2>Upcoming Contest</h2>
+      <div class="col-sm-12 row">
+        <div class="col-md-6 gray-box line-height-20px" *ngFor="let contest of upcomingContests">
+          <div class="col-md-12">
+
+            <h3>{{contest?.name}}</h3>
+            <p>{{contest?.description}}
+              <!-- <a href="#">Read More...</a> -->
+            </p>
+            <hr>
+            <!-- <div class="small col-md-8 row">
+              <strong>Number Of Questions :-
+                          <span class="label label-success" style="font-family: arial;"> {{exam?.numberOfQuestions}}</span>
+                        </strong>
+            </div> -->
+
+            <div class="small col-md-8 row">
+              <strong>Duration :-
+                <span class="label label-success" style="font-family: arial;"> {{contest?.duration}} minutes</span>
+              </strong>
+              <br>
+              <!-- <strong>Execution Time :-
+                <span class="label label-primary" style="font-family: arial;"> {{contest?.executionTime}} ms</span>
+              </strong>
+              <br>
+              <strong>Your Score :-
+                <span class="label label-danger" style="font-family: arial;"> {{contest?.score}}</span>
+              </strong>
+              <br>
+              <strong>Maximun Score :-
+                <span class="label label-info" style="font-family: arial;"> {{contest?.maxScore}}</span>
+              </strong>
+              <br> -->
+              <strong>Time of Commencement :-
+                <span class="label label-warning" style="font-family: arial;"> {{contest?.startDate | date : 'yyyy-MM-dd HH:mm a' : '-0000'}}</span>
+              </strong>
+              <br>
+              <strong>Completion Time :-
+                <span class="label label-warning" style="font-family: arial;"> {{contest?.endDate | date : 'yyyy-MM-dd HH:mm a' : '-0000'}}</span>
+              </strong>
+
+            </div>
+
+            
+          </div>
+        </div>
+
+
+        <div class="col-md-6 gray-box  line-height-20px" *ngIf="upcomingContests.length===0">
+          No upcoming contests.
+        </div>
+
+        <!-- <div class="col-md-12">
+        <h2>Exam Details<button type="button" class="btn btn-danger pull-right"><span class="glyphicon glyphicon-backward"></span>  Back to Exam</button></h2>
+
+        <p>However, if you are only bridging, and not doing IP routing, then you can configure the two interfaces on the same
+          subnet. B.For the routing to work, each interface should be on a different subnet. However, if you are only bridging,
+          and not doing IP routing, then you can configure the two interfaces on the same subnet. C.Each interface should
+          be on a different subnet. However, if you are only bridging, and not doing IP routing, then you can configure
+          the two interfaces on the same subnet. D.No. For the routing to work, each interface should be on a different
+          subnet. However, if you are only bridging, and not doing IP routing, then you can configure the two interfaces
+          on the same subnet.</p>
+      </div> -->
+      </div>
+    </div>
+
+
+    <div id="menu1" class="tab-pane active" *ngIf="currentTab==='completed'">
+      <div class="">
+        <h2>Completed Contest</h2>
+
+        <div class="col-md-6 gray-box line-height-20px" *ngFor="let contest of completedContests">
+          <div class="col-md-12">
+
+            <h3>{{contest?.name}}</h3>
+            <p>{{contest?.description}}
+              <!-- <a href="#">Read More...</a> -->
+            </p>
+            <hr>
+            <!-- <div class="small col-md-8 row">
+              <strong>Number Of Questions :-
+                          <span class="label label-success" style="font-family: arial;"> {{exam?.numberOfQuestions}}</span>
+                        </strong>
+            </div> -->
+
+            <div class="small col-md-8 row">
+              <strong>Duration :-
+                <span class="label label-success" style="font-family: arial;"> {{contest?.duration}} minutes</span>
+              </strong>
+              <br>
+              <strong>Execution Time :-
+                <span class="label label-primary" style="font-family: arial;"> {{contest?.executionTime}} ms</span>
+              </strong>
+              <br>
+              <strong>Your Score :-
+                <span class="label label-danger" style="font-family: arial;"> {{contest?.score}}</span>
+              </strong>
+              <br>
+              <strong>Maximum Score :-
+                <span class="label label-info" style="font-family: arial;"> {{contest?.maxScore}}</span>
+              </strong>
+              <br>
+              <strong>Time of Commencement :-
+                <span class="label label-warning" style="font-family: arial;"> {{contest?.startDate | date : 'yyyy-MM-dd HH:mm a' : '-0000'}}</span>
+              </strong>
+              <br>
+              <strong>Completion Time :-
+                <span class="label label-warning" style="font-family: arial;"> {{contest?.endDate | date : 'yyyy-MM-dd HH:mm a' : '-0000'}}</span>
+              </strong>
+
+            </div>
+
+            <div class="small pull-right col-md-4 ">
+              <button type="button" class="btn dp-btn-success pull-right" (click)="getLeaderBoard(contest._id)">
+                <span class="glyphicon glyphicon-tower"></span> Leaderboard</button>
+              <!-- <span class="label label-success pull-right margin-top" style="font-family: arial;">Incharge Faculty:-
+                <span *ngFor="let name of exam.facultyNames">
+                  {{name}}
+                </span>
+                <br>
+              </span> -->
+            </div>
+            <!-- <div class="small">
+              <strong>Duration :-
+                <span class="label label-primary" style="font-family: arial;"> {{contest?.duration}}</span>
+              </strong>
+              <br>
+              <strong>Time of Commencement :-
+                <span class="label label-warning" style="font-family: arial;"> {{contest?.startDate | date : 'yyyy-MM-dd HH:mm a' : '-0000'}}</span>
+              </strong><br>
+              <strong>Completion Time :-
+                <span class="label label-warning" style="font-family: arial;"> {{contest?.startDate | date : 'yyyy-MM-dd HH:mm a' : '-0000'}}</span>
+              </strong>
+            </div> -->
+          </div>
+        </div>
+
+        <div class="col-md-6 gray-box  line-height-20px" *ngIf="completedContests.length===0">
+          No completed contests.
+        </div>
+
+        <div class="col-sm-12" *ngIf="leaderBoard.length != 0">
+          <h2>Leaderboard</h2>
+          <!-- <div class="alert alert-danger" *ngIf="students.length == 0">No Students are available.</div> -->
+          <table class="table-blue-bg table faculty-table table-responsive table-striped table-hover " cellspacing="0" cellpadding="3"
+            rules="cols">
+            <tbody>
+              <tr align="left">
+                <th scope="col">
+                  Rank
+                </th>
+                <th scope="col">Student Name</th>
+                <th scope="col">Roll Number</th>
+                <th scope="col">Department</th>
+                <th scope="col">Year </th>
+                <th scope="col">Score </th>
+                <th scope="col">Execution Time</th>
+              </tr>
+              <tr *ngFor="let data of leaderBoard">
+                <td align="center">{{data?.rank}}</td>
+                <td>
+                  {{data?.firstName}} {{data?.lastName}}
+                </td>
+                <td>
+                  {{data?.rollNo}}
+                </td>
+                <td>
+                  {{data?.department}}
+                </td>
+                <td>
+                  {{data?.year}}
+                </td>
+                <td>
+                  {{data?.submittedContests[0]?.score}}
+                </td>
+                <td>
+                  {{data?.submittedContests[0]?.executionTime + ' ms'}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+
+        <!-- <div class="col-md-12">
+          <h5>Note :- When you click on above Review Button the below module will come and it will be full screen with out
+            menu
+          </h5>
+        </div> -->
+
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,333 @@
+<div id="band" class="container">
+  <!-- <ol class="breadcrumb">
+     <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+     <li class="breadcrumb-item active">Manage Student</li>
+     <li class="breadcrumb-item active">Edit Challenge</li>
+  </ol> -->
+
+  <div class="tab-content">
+    <div id="home" class=" tab-pane active">
+      <br>
+      <div class="row">
+
+
+        <div class="col-sm-6">
+          <div class="form-group">
+            <label>Enter Challenge Name:&nbsp;</label>
+            <input type="text" #challenge/><button class="btn btn-primary m-2" style="margin-left:15px" (click)="searchChallenge(challenge.value)">Search</button>
+            <div class="alert alert-danger" *ngIf="noSearchResultString">{{noSearchResultString}}</div>
+            <ul class="filterList" *ngIf="searchResults.length!=0" style="width: 55% !important;">
+              <li (click)="searchClicked(searchResult)" *ngFor="let searchResult of searchResults">{{searchResult.name}}</li>
+            </ul>
+          </div>
+          <h2>Edit Challenge</h2>
+
+
+          <div class="form-group">
+            <label>Challenge Name</label>
+            <input type="email" class="form-control" [(ngModel)]="searchedChallenge.name">
+          </div>
+          <label>Slug: {{searchedChallenge.slug}}</label>
+
+          <div class="form-group">
+            <label>Description</label>
+            <app-ngx-editor [disabled]=true [placeholder]="'Enter text here...'" [config]="editorConfig" [spellcheck]="true" [(ngModel)]="searchedChallenge.description"></app-ngx-editor>
+          </div>
+          <div class="form-group">
+            <label>Input</label>
+            <app-ngx-editor [placeholder]="'Enter text here...'" [config]="editorConfig" [spellcheck]="true" [(ngModel)]="searchedChallenge.input"></app-ngx-editor>
+          </div>
+          <div class="form-group">
+            <label>Output</label>
+            <app-ngx-editor [placeholder]="'Enter text here...'" [config]="editorConfig" [spellcheck]="true" [(ngModel)]="searchedChallenge.output"></app-ngx-editor>
+          </div>
+
+          <div class="form-group">
+            <label>Constraints</label>
+            <app-ngx-editor [placeholder]="'Enter text here...'" [config]="editorConfig" [spellcheck]="true" [(ngModel)]="searchedChallenge.constraints"></app-ngx-editor>
+          </div>
+
+          <div class="form-group">
+            <label>Explanation</label>
+            <app-ngx-editor [placeholder]="'Enter text here...'" [config]="editorConfig" [spellcheck]="true" [(ngModel)]="searchedChallenge.explanation"></app-ngx-editor>
+          </div>
+
+          <div class="form-group">
+            <!--  -->
+            <mat-form-field class="demo-chip-list">
+              <mat-chip-list #chipList>
+                <mat-chip *ngFor="let tag of tags" [selectable]="selectable" [removable]="removable" (removed)="remove(tag)">
+                  {{tag}}
+                  <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                </mat-chip>
+                <input placeholder="Tags" #tagInput [formControl]="tagCtrl" [matAutocomplete]="auto" [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                  (input)="tagValueEntered(tagInput.value)" (focus)="tagValueEntered(tagInput.value)" [matChipInputAddOnBlur]="addOnBlur"
+                  (matChipInputTokenEnd)="add($event)" />
+              </mat-chip-list>
+              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                <mat-option *ngFor="let filteredTag of filteredTags" [value]="filteredTag">
+                  {{ filteredTag }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+            <!--  -->
+          </div>
+          <div class="form-group">
+            <label>Difficulty</label>
+            <select type="text" class="form-control" [(ngModel)]="searchedChallenge.difficulty">
+                <option [value]=0>Easy</option>
+                <option [value]=1>Medium</option>
+                <option [value]=2>Hard</option>
+              </select>
+          </div>
+          Code Completion:&nbsp;
+          <input type="radio" value="true" name="codeComplete" required [(ngModel)]="searchedChallenge.codeComplete"> Yes
+          <input type="radio" value="false" name="codeComplete" required [(ngModel)]="searchedChallenge.codeComplete"> No
+          <div class="form-group" *ngIf="searchedChallenge.codeComplete==='true'">
+            <div class="dropdown">
+              <button class="form-control dropdown-toggle" type="button" data-toggle="dropdown">Languages Applicable
+                <span class="caret"></span></button>
+              <ul class="dropdown-menu">
+                <li *ngFor="let language of languageDesc.languages;let i=index"><a><input type="radio" [value]="language.code" name="language" [attr.id]="'language'+i" [(ngModel)]="singleLanguage" [disabled]="!searchedChallenge._id"/><label [attr.for]="'language'+i">{{language.languageName}}</label></a></li>
+                <!-- <li><a><input type="radio" value="c++" name="language" id="language2" [(ngModel)]="singleLanguage"/><label for="language2">C++</label></a></li>
+                <li><a><input type="radio" value="java" name="language" id="language3" [(ngModel)]="singleLanguage"/><label for="language3">Java</label></a></li>
+                <li><a><input type="radio" value="python 2.7" name="language" id="language4" [(ngModel)]="singleLanguage"/><label for="language4">Python 2.7</label></a></li>
+                <li><a><input type="radio" value="python 3.4" name="language" id="language5" [(ngModel)]="singleLanguage"/><label for="language5">Python 3.4</label></a></li> -->
+              </ul>
+            </div>
+          </div>
+          <div class="form-group" *ngIf="searchedChallenge.codeComplete==='false'">
+            <div class="dropdown">
+              <button class="form-control dropdown-toggle" type="button" data-toggle="dropdown">Languages Applicable
+              <span class="caret"></span></button>
+              <ul class="dropdown-menu">
+                <li *ngFor="let languages of languageDesc.languages;let i=index"><a><input type="checkbox" [(ngModel)]="language[i]" [attr.id]="'language'+i" [disabled]="!searchedChallenge._id" (ngModelChange)="change()"/><label [attr.for]="'language'+i">{{languages.languageName}}</label></a></li>
+                <!-- <li><a><input type="checkbox" [(ngModel)]="language[1]" id="language2"/><label for="language2">C++</label></a></li>
+                <li><a><input type="checkbox" [(ngModel)]="language[2]" id="language3"/><label for="language3">Java</label></a></li>
+                <li><a><input type="checkbox" [(ngModel)]="language[3]" id="language4"/><label for="language4">Python 2.7</label></a></li>
+                <li><a><input type="checkbox" [(ngModel)]="language[4]" id="language5"/><label for="language5">Python 3.4</label></a></li> -->
+              </ul>
+            </div>
+          </div>
+          Timeout (ms)<input class="form-control" type="number" [(ngModel)]="searchedChallenge.timeout" style="margin-bottom:15px"/>
+          Score<input class="form-control" type="number" [(ngModel)]="searchedChallenge.score" style="margin-bottom:15px"/>          
+
+          <h2>Test Cases</h2>
+          <div class="alert alert-danger" *ngIf="searchedChallenge.testcases.length == 0">No Testcases are added to this challenge. </div>
+          <table *ngIf="searchedChallenge.testcases.length != 0" style="margin-bottom:15px" class="table-blue-bg table faculty-table table-responsive table-striped table-hover "
+            cellspacing="0" cellpadding="3" rules="cols">
+            <tbody>
+              <tr align="left">
+                <th scope="col">Input</th>
+                <th scope="col">Output</th>
+                <th scope="col">Tag</th>
+                <th scope="col">Percent(%)</th>
+                <th scope="col">Remove</th>
+              </tr>
+              <tr *ngFor="let testcase of searchedChallenge.testcases;let row_no = index">
+                <td>
+                  <button class="btn btn-danger m-2" (click)="downloadInput(testcase.input)">Download</button>
+                </td>
+                <td>
+                  <button class="btn btn-danger m-2" (click)="downloadOutput(testcase.output)">Download</button>
+                </td>
+                <td>
+                  {{testcase.tag}}
+                </td>
+                <td>
+                  {{testcase.percent}}
+                </td>
+                <td>
+                  <span class="cursor-pointer removeTestCase" (click)="removeTestCase(row_no)">&#10006;</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="alert alert-danger" *ngIf="searchedChallenge.testcases.length !=0 && testCasePercent!=0">Add all the testcases. </div>
+          <!-- <div class="col-md-6  form-group">
+                  <label>Intial Code</label>
+                  <Button class="btn btn-info m-2">Edit</Button>
+          
+              </div> -->
+          <div>
+            <button type="button" class="pull-left btn btn-info btn-lg" data-toggle="modal" data-target="#initialCodeModal" (click)="getLanguage()"
+              [disabled]="!searchedChallenge._id">Initial Code</button>
+          </div>
+          <button type="button" class="pull-right btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" [disabled]="!searchedChallenge._id"
+            (click)="closeTestCase()">New Test Case</button>
+        </div>
+
+
+      </div>
+
+      <div><button class="btn btn-primary m-2" style="margin-top:15px" (click)="submit()" [disabled]="!searchedChallenge._id || testCasePercent!=0">Update Challenge</button></div>
+      <div class="alert alert-success margin-top" *ngIf="success">Challenge updated successfully. </div>
+      <div class="alert alert-danger margin-top" *ngIf="error">Some problem while updating the challenge. </div>
+      
+      <!---model box-->
+      <!-- Modal -->
+      <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div>
+              <button type="button" class="close" data-dismiss="modal" (click)="closeTestCase()">&times;</button>
+              <h4 class="modal-title">New Test Case</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="form-group">
+                  <label>Input</label>
+                  <input type="text" class="form-group form-control" [(ngModel)]="inputTextTestCase" [disabled]="inputTestCase">
+                  <label [style.cursor]="inputTextTestCase ? 'not-allowed' : 'default'" [style.pointer-events]="inputTextTestCase ? 'none' : 'auto'"
+                    for="inputupload-text" class="btn btn-danger">Upload</label><span *ngIf="inputFileUploadMessage"
+                    style="margin-left:15px;color:rgba(241, 9, 9, 0.77)">{{inputFileUploadMessage}}</span>
+                  <input type="file" placeholder="Upload file" name="photo" id="inputupload-text" (change)="fileChange($event,'input')" accept=".txt"
+                    [disabled]="inputTextTestCase" />
+                </div>
+                <div class="form-group">
+                  <label>Output</label>
+                  <input type="text" class="form-group form-control" [(ngModel)]="outputTextTestCase" [disabled]="outputTestCase">
+                  <label [style.cursor]="outputTextTestCase ? 'not-allowed' : 'default'" [style.pointer-events]="outputTextTestCase ? 'none' : 'auto'"
+                    for="outputupload-text" class="btn btn-danger">Upload</label><span *ngIf="outputFileUploadMessage"
+                    style="margin-left:15px;color:rgba(241, 9, 9, 0.77)">{{outputFileUploadMessage}}</span>
+                  <input type="file" placeholder="Upload file" name="photo" id="outputupload-text" (change)="fileChange($event,'output')" accept=".txt"
+                    [disabled]="outputTextTestCase" /> </div>
+              </div>
+
+              <div class="row form-group">
+                <label>Tag</label>
+                <input type="text" class="form-control" [(ngModel)]="testCaseTag">
+
+              </div>
+              <div class="row  form-group">
+                <label>Percent(%)</label>
+                <input type="number" class="form-control" [(ngModel)]="testCasePercent" [disabled]="testCasePercent===0">
+
+              </div>
+              <div class="alert alert-danger" *ngIf="testCasePercent>100">Percent reached maximum value. </div>
+              
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal" (click)="addTestCase()" [disabled]="(!inputTestCase && !inputTextTestCase) || (!outputTestCase && !outputTextTestCase) || (testCasePercent===0 || !testCasePercent)">Add</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+      <!-- Model box ends here -->
+
+
+      <!-- if its a No - fields -Input(field Name) textarea Upload Button if its a yes - fields -Input(field Name) textarea - before
+      User Alogarthiam Text area Upload Button After User Alogarthiam Text area Upload Button -->
+    </div>
+
+  </div>
+
+</div>
+
+<!-- <div id="viewModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <div class="modal-content">
+      <div>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">New Test Case</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+        </div>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Add</button>
+      </div>
+    </div>
+
+  </div>
+</div> -->
+
+<div id="initialCodeModal" class="modal fade" role="dialog">
+  <div class="modal-dialog" style="width: 80%;">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Initial Code</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div style="margin-bottom: 20px;">
+            <select type="text" class="form-control" [(ngModel)]="currentLanguage">
+                  <option *ngFor="let appliedLang of appliedLanguage;let i =index;" [ngValue]="appliedLang">{{appliedLang.name}}</option>
+            </select>
+          </div>
+
+          
+            <ace-editor *ngIf="(this.searchedChallenge.codeComplete==='false' && checkboxSelected===true) ||(this.searchedChallenge.codeComplete==='true' && singleLanguage!=undefined)" [(text)]="initialCode[currentLanguage.i]" [mode]="currentLanguage.mode" [theme]="'ambiance'" [options]="options"
+            [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000" style="min-height: 200px; width:100%; overflow: scroll;"></ace-editor>
+         
+            <ace-editor *ngIf="this.searchedChallenge.codeComplete==='true' && singleLanguage!=undefined" [(text)]="studentAlgorithm[currentLanguage.i]" [mode]="currentLanguage.mode" [theme]="'ambiance'" [options]="options"
+            [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000" style="min-height: 200px; width:100%; overflow: scroll;"></ace-editor>
+          
+            <ace-editor *ngIf="this.searchedChallenge.codeComplete==='true' && singleLanguage!=undefined" [(text)]="laterCode[currentLanguage.i]" [mode]="currentLanguage.mode" [theme]="'ambiance'" [options]="options"
+            [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000" style="min-height: 200px; width:100%; overflow: scroll;"></ace-editor>
+          
+
+          <!-- <div ace-editor *ngIf="currentLanguage==='c'" [(text)]="initialCode[0]" [mode]="'c_cpp'" [theme]="'ambiance'" [options]="options"
+            [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000" style="min-height: 200px; width:100%; overflow: scroll;"></div>
+          <div ace-editor *ngIf="currentLanguage==='c++'" [(text)]="initialCode[1]" [mode]="'c_cpp'" [theme]="'ambiance'" [options]="options"
+            [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000" style="min-height: 200px; width:100%; overflow: scroll;"></div>
+          <div ace-editor *ngIf="currentLanguage==='java'" [(text)]="initialCode[2]" [mode]="'java'" [theme]="'ambiance'" [options]="options"
+            [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000" style="min-height: 200px; width:100%; overflow: scroll;"></div>
+          <div ace-editor *ngIf="currentLanguage==='Python 2.7'" [(text)]="initialCode[3]" [mode]="'python'" [theme]="'ambiance'" [options]="options"
+            [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000" style="min-height: 200px; width:100%; overflow: scroll;"></div>
+          <div ace-editor *ngIf="currentLanguage==='Python 3.4'" [(text)]="initialCode[4]" [mode]="'python'" [theme]="'ambiance'" [options]="options"
+            [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000" style="min-height: 200px; width:100%; overflow: scroll;"></div>
+
+          <div ace-editor *ngIf="currentLanguage==='c' && !this.searchedChallenge.codeComplete" [(text)]="studentAlgorithm[0]" [mode]="'c_cpp'"
+            [theme]="'ambiance'" [options]="options" [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000"
+            style="min-height: 200px; width:100%; overflow: scroll;"></div>
+          <div ace-editor *ngIf="currentLanguage==='c++' && !this.searchedChallenge.codeComplete" [(text)]="studentAlgorithm[1]" [mode]="'c_cpp'"
+            [theme]="'ambiance'" [options]="options" [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000"
+            style="min-height: 200px; width:100%; overflow: scroll;"></div>
+          <div ace-editor *ngIf="currentLanguage==='java' && !this.searchedChallenge.codeComplete" [(text)]="studentAlgorithm[2]" [mode]="'java'"
+            [theme]="'ambiance'" [options]="options" [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000"
+            style="min-height: 200px; width:100%; overflow: scroll;"></div>
+          <div ace-editor *ngIf="currentLanguage==='Python 2.7' && !this.searchedChallenge.codeComplete" [(text)]="studentAlgorithm[3]"
+            [mode]="'python'" [theme]="'ambiance'" [options]="options" [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000"
+            style="min-height: 200px; width:100%; overflow: scroll;"></div>
+          <div ace-editor *ngIf="currentLanguage==='Python 3.4' && !this.searchedChallenge.codeComplete" [(text)]="studentAlgorithm[4]"
+            [mode]="'python'" [theme]="'ambiance'" [options]="options" [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000"
+            style="min-height: 200px; width:100%; overflow: scroll;"></div>
+
+          <div ace-editor *ngIf="currentLanguage==='c' && !this.searchedChallenge.codeComplete" [(text)]="laterCode[0]" [mode]="'c_cpp'"
+            [theme]="'ambiance'" [options]="options" [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000"
+            style="min-height: 200px; width:100%; overflow: scroll;"></div>
+          <div ace-editor *ngIf="currentLanguage==='c++' && !this.searchedChallenge.codeComplete" [(text)]="laterCode[1]" [mode]="'c_cpp'"
+            [theme]="'ambiance'" [options]="options" [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000"
+            style="min-height: 200px; width:100%; overflow: scroll;"></div>
+          <div ace-editor *ngIf="currentLanguage==='java' && !this.searchedChallenge.codeComplete" [(text)]="laterCode[2]" [mode]="'java'"
+            [theme]="'ambiance'" [options]="options" [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000"
+            style="min-height: 200px; width:100%; overflow: scroll;"></div>
+          <div ace-editor *ngIf="currentLanguage==='Python 2.7' && !this.searchedChallenge.codeComplete" [(text)]="laterCode[3]"
+            [mode]="'python'" [theme]="'ambiance'" [options]="options" [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000"
+            style="min-height: 200px; width:100%; overflow: scroll;"></div>
+          <div ace-editor *ngIf="currentLanguage==='Python 3.4' && !this.searchedChallenge.codeComplete" [(text)]="laterCode[4]"
+            [mode]="'python'" [theme]="'ambiance'" [options]="options" [readOnly]="false" [autoUpdateContent]="true" [durationBeforeCallback]="1000"
+            style="min-height: 200px; width:100%; overflow: scroll;"></div> -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Done</button>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,221 @@
+<div id="band" class="container">
+    <h2>Exams</h2>
+  <ul class="nav nav-tabs card-body bg-info text-white" role="tablist">
+    <li class="nav-item cursor-pointer" [ngClass]="{active:(currentTab==='upcoming')}" (click)="tabClicked('upcoming')">
+      <a class="nav-link">Upcoming</a>
+    </li>
+    <li class="nav-item cursor-pointer" [ngClass]="{active:(currentTab==='completed')}" (click)="tabClicked('completed')">
+      <a class="nav-link">Completed</a>
+    </li>
+
+
+  </ul>
+  <div class="tab-content">
+    <div id="home" class=" tab-pane active" *ngIf="currentTab==='upcoming'">
+      <h2>Upcoming Exams</h2>
+      <div class="col-sm-12 row">
+        <div class="col-md-6 gray-box line-height-20px" *ngFor="let exam of upcomingExams">
+          <div class="col-md-12">
+
+            <h3>{{exam?.name}}</h3>
+            <p>{{exam?.description}}
+              <!-- <a href="#">Read More...</a> -->
+            </p>
+            <hr>
+            <div class="small col-md-8 row">
+              <strong>Number Of Questions :-
+                      <span class="label label-success" style="font-family: arial;"> {{exam?.numberOfQuestions}}</span>
+                    </strong>
+            </div>
+            <div class="small  col-md-4 pull-right">
+              <span class="label label-success pull-right" style="font-family: arial;">Incharge Faculty:- 
+                <span *ngFor="let name of exam.facultyNames">
+                  {{name}}
+                </span>
+              <br>
+              </span>
+            </div>
+
+            
+            <div class="small">
+              <strong>Duration :-
+                          <span class="label label-primary" style="font-family: arial;"> {{exam?.duration}}</span>
+                        </strong><br>
+              <strong>Time of Commencement :-
+                          <span class="label label-warning" style="font-family: arial;"> {{exam?.startDate | date : 'yyyy-MM-dd
+                            HH:mm a' : '-0000'}}</span>
+                        </strong>
+
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-md-6 gray-box  line-height-20px" *ngIf="upcomingExams.length===0">
+            No upcoming exams.
+        </div>
+
+        <!-- <div class="col-md-12">
+          <h2>Exam Details<button type="button" class="btn btn-danger pull-right"><span class="glyphicon glyphicon-backward"></span>  Back to Exam</button></h2>
+
+          <p>However, if you are only bridging, and not doing IP routing, then you can configure the two interfaces on the same
+            subnet. B.For the routing to work, each interface should be on a different subnet. However, if you are only bridging,
+            and not doing IP routing, then you can configure the two interfaces on the same subnet. C.Each interface should
+            be on a different subnet. However, if you are only bridging, and not doing IP routing, then you can configure
+            the two interfaces on the same subnet. D.No. For the routing to work, each interface should be on a different
+            subnet. However, if you are only bridging, and not doing IP routing, then you can configure the two interfaces
+            on the same subnet.</p>
+        </div> -->
+      </div>
+    </div>
+
+
+    <div id="menu1" class="tab-pane active" *ngIf="currentTab==='completed'">
+      <div class="">
+        <h2>Completed Exams</h2>
+
+
+
+        <div class="col-sm-12 row" *ngIf="showExams">
+          <div class="col-md-6 gray-box line-height-20px" *ngFor="let exam of completedExams">
+            <div class="col-md-12">
+
+              <h3>{{exam?.name}}</h3>
+              <p>{{exam?.description}}
+                <!-- <a href="#">Read More...</a> -->
+              </p>
+              <hr>
+              <!-- <div class="small col-md-8 row">
+                <strong>Number Of Questions :-
+                            <span class="label label-success" style="font-family: arial;"> {{exam?.numberOfQuestions}}</span>
+                          </strong>
+              </div> -->
+
+              <div class="small col-md-8 row">
+                <strong>Number Of Questions :-
+                    <span class="label label-success" style="font-family: arial;"> {{exam?.numberOfQuestions}}</span>
+                  </strong>
+                <br>
+                <strong>Duration :-
+                    <span class="label label-primary" style="font-family: arial;"> {{exam?.duration}}</span>
+                  </strong> <br>
+                <strong>Time of Commencement :-
+                      <span class="label label-warning" style="font-family: arial;">{{exam?.startDate | date : 'yyyy-MM-dd
+                          HH:mm a' : '-0000'}}</span>
+                    </strong>
+              </div>
+
+              <div class="small  col-md-4 pull-right">
+                <button type="button" class="btn dp-btn-primary pull-right" (click)="reviewExam(exam)"><span class="glyphicon glyphicon-eye-open"></span> Review</button>
+                <span class="label label-success pull-right margin-top" style="font-family: arial;">Incharge Faculty:- 
+                      <span *ngFor="let name of exam.facultyNames">
+                        {{name}}
+                      </span>
+                <br>
+                </span>
+              </div>
+              <!-- <div class="small">
+                <strong>Duration :-
+                                <span class="label label-primary" style="font-family: arial;"> {{exam?.duration}}</span>
+                              </strong><br>
+                <strong>Time of Commencement :-
+                                <span class="label label-warning" style="font-family: arial;"> {{exam?.startDate | date : 'yyyy-MM-dd
+                                  HH:mm a' : '-0000'}}</span>
+                              </strong>
+
+              </div> -->
+            </div>
+          </div>
+
+          <div class="col-md-6 gray-box  line-height-20px" *ngIf="completedExams.length===0">
+              No completed exams.
+          </div>
+
+          <!-- <div class="col-md-12">
+            <h5>Note :- When you click on above Review Button the below module will come and it will be full screen with out
+              menu
+            </h5>
+          </div> -->
+        </div>
+
+        <div class="col-sm-12 row" *ngIf="!showExams">
+
+          <div class="backDiv ">
+            <button class="btn btn-success float-right margin-bottom" (click)="showExams=true;reviewResult=undefined">
+                            <i class="fas fa-arrow-left"></i>
+                            Back
+                          </button>
+          </div>
+          <div class="col-sm-12 questions-bg">
+            <div class="row col-sm-4 list-bg">
+              <ol>
+                <li class="cursor-pointer" *ngFor="let question of examReviewDetails.examDetails;let i=index" (click)="selectedQuestion=question;selectedQuestionIndex=i;reviewResult=undefined">
+                  <span [ngClass]="{'attempt':(question.attempt==='attempted'),'un-attempt':(question.attempt==='unattempted')}"></span>Question {{i+1}}</li>
+
+              </ol>
+              <div class="list-bg-footer">
+                <span class="attempt"></span>Attempted
+                <!-- <span class="review"></span>Review  -->
+                <span class="un-attempt"></span>Not Attempted</div>
+            </div>
+            <div class="col-sm-8">
+              <div class="col-md-8">
+                <h3 class="white-text">Exam Name:{{reviewedExam?.name}}</h3>
+              </div>
+              <!-- <div class="col-md-2 white-text" style="margin-top: 10px;">Timer:HH:MM</div> -->
+              <!-- <div class="col-md-2" style="margin-top: 8px;"><button type="button" class="pull-right btn btn-danger">Submit</button></div> -->
+              <div class="question-bg">
+                <h3 style="font-weight:bold">Q, {{selectedQuestion?.question}}?</h3><br>
+                <div class="row" *ngFor="let option of selectedQuestion.options;let i=index">
+                  <div class="col-md-1 text-center">
+                    <input style="float: left" type="checkbox" disabled/>
+                    <span class="ml-2">{{i+1}}.</span>
+                  </div>
+                  <div class="col-md-11">{{option}}.</div>
+                </div>
+
+                <br>
+                <div class="alert alert-danger" *ngIf="reviewResult==='unAttempted'">You did not attempt this question.</div>
+                <div class="alert alert-danger" *ngIf="reviewResult==='wrong'">Your answer was incorrect.<br> Your answer :<br>
+                  <span style="font-weight:bold">
+                    {{yourAnswer}}
+                  </span>
+                  <br>Correct Answer : <br>
+                  <span style="font-weight:bold">
+                      {{correctAnswer}}
+                    </span>
+                </div>
+                <div class="alert alert-success" *ngIf="reviewResult==='correct'">Your answer was correct.<br> Your answer : <br>
+                  <span style="font-weight:bold">
+                      {{yourAnswer}}
+                    </span>
+                </div>
+                <br>
+                <button type="button" class="btn btn-success" (click)="reviewQuestion()">Review Answer</button>
+                <button type="button" class="pull-right btn btn-danger" (click)="(selectedQuestionIndex===examReviewDetails.examDetails.length-1)?(selectedQuestion=selectedQuestion):(selectedQuestion=examReviewDetails.examDetails[selectedQuestionIndex+1]);
+                  (selectedQuestionIndex===examReviewDetails.examDetails.length-1)?(selectedQuestionIndex=selectedQuestionIndex):(selectedQuestionIndex=selectedQuestionIndex+1);reviewResult=undefined">
+                Next Question</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="col-md-12">
+            <h3>When you click on read more link below exam details will shown</h3>
+            <h2>Exam Details<button type="button" class="btn btn-danger pull-right"><span class="glyphicon glyphicon-backward"></span>  Back to Exam</button></h2>
+
+            <p>However, if you are only bridging, and not doing IP routing, then you can configure the two interfaces on the
+              same subnet. B.For the routing to work, each interface should be on a different subnet. However, if you are
+              only bridging, and not doing IP routing, then you can configure the two interfaces on the same subnet. C.Each
+              interface should be on a different subnet. However, if you are only bridging, and not doing IP routing, then
+              you can configure the two interfaces on the same subnet. D.No. For the routing to work, each interface should
+              be on a different subnet. However, if you are only bridging, and not doing IP routing, then you can configure 
+              the two interfaces on the same subnet.</p>
+          </div> -->
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>

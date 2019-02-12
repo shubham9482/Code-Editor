@@ -1,0 +1,147 @@
+<!-- <div id="band" class="container">
+ 
+  <div class="" style="width:60%">
+
+    <div class="form-group">
+      <label>First Name</label>
+      <input type="text" class="form-control" [(ngModel)]="studentDetails.firstName"/>
+    </div>
+
+    <div class="form-group">
+      <label>Last Name</label>
+      <input type="text" class="form-control" [(ngModel)]="studentDetails.lastName"/>
+    </div>
+
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" class="form-control" [(ngModel)]="studentDetails.email"/>
+    </div>
+
+    <div class="form-group">
+      <label>Mobile No.</label>
+      <input type="text" class="form-control" [(ngModel)]="studentDetails.mobileNumber"/>
+    </div>
+
+    <div class="form-group">
+      <label>Date Of Birth</label>
+      <input type="date" class="form-control" [(ngModel)]="studentDetails.dob"/>
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" class="form-control" id="pwd" [(ngModel)]="studentDetails.password"/>
+    </div>
+    <div class="form-group">
+      <label>New Password</label>
+      <input type="password" class="form-control" id="nwpwd" [(ngModel)]="newPassword"/>
+    </div>
+    <div class="form-group">
+      <label>Roll Number</label>
+      <input type="text" class="form-control" id="pwd" [(ngModel)]="studentDetails.rollNo"/>
+    </div>
+
+    <div class="form-group">
+      <label>Address</label>
+      <textarea class="form-control" [(ngModel)]="studentDetails.address"></textarea>
+    </div>
+    <button type="submit" class="btn btn-success" (click)="update()">Submit</button>
+
+  </div>
+</div> -->
+
+<div id="band" class="container">
+
+  <div class="row white-bg" style="width:60%">
+      <h2 style="
+      padding-left: 14px;
+  ">Profile Setting</h2>
+    <div class="col-md-12 white-bg">
+      <div class="alert alert-danger" *ngIf="!checkStatus">{{unsuccessfulText}} </div>
+      <div class="alert alert-success" *ngIf="updated">Details Updated. </div>
+    </div>
+
+    <div class="col-md-6 form-group required">
+      <label class='control-label'>First Name</label>
+      <input type="email" class="form-control" [(ngModel)]="studentDetails.firstName" />
+    </div>
+
+    <div class="col-md-6 form-group required">
+      <label class='control-label'>Last Name</label>
+      <input type="email" class="form-control" [(ngModel)]="studentDetails.lastName" />
+    </div>
+
+    <div class="col-md-6 form-group required">
+      <label class='control-label'>Mobile Number</label>
+      <input type="email" class="form-control" [(ngModel)]="studentDetails.mobileNumber" />
+    </div>
+
+    <!-- <div class="col-md-6 form-group">
+      <label>Mobile Number(optional)</label>
+      <input type="email" class="form-control">
+    </div> -->
+
+
+    <div class="col-md-12 form-group" style="background-color: #e6e6e6;">
+      <div class="col-md-4  form-group">
+        <label>Password</label>
+        <input type="password" class="form-control" id="pwd" [(ngModel)]="currentPassword">
+      </div>
+      <div class="col-md-4  form-group">
+        <label>New Password</label>
+        <input type="password" class="form-control" id="nwpwd" [(ngModel)]="newPassword">
+      </div>
+      <div class="col-md-4  form-group">
+        <label>Confirm Password</label>
+        <input type="password" class="form-control" id="repwd" [(ngModel)]="confirmPassword">
+      </div>
+
+    </div>
+
+    <div class="col-md-6 form-group required">
+      <label class='control-label'>Date Of Birth</label>
+      <input type="date" class="form-control" [(ngModel)]="studentDetails.DOB" />
+    </div>
+
+    <div class="col-md-6 form-group required">
+      <label class='control-label'>Roll Number</label>
+      <input type="text" class="form-control" id="rollNo" [(ngModel)]="studentDetails.rollNo" [disabled]="true" />
+    </div>
+
+    <div class="col-md-6 form-group required">
+      <label class='control-label'>Address</label>
+      <textarea class="form-control" [(ngModel)]="studentDetails.address"></textarea>
+    </div>
+
+    <div class="col-md-12 form-group">
+      <button type="submit" class="btn dp-btn-primary" (click)="update()">Submit</button>
+    </div>
+
+    <div class=" col-md-12 form-group">
+      <label>Current Email:
+        <span>{{studentDetails?.email || '-'}}</span>
+      </label>
+    </div>
+
+    <div class="col-md-6 form-group">
+      <label>Email</label>
+      <input type="email" class="form-control" id="email" [(ngModel)]="newEmail">
+    </div>
+
+    <div class="col-md-12 form-group">
+      <button type="submit" class="btn dp-btn-success" (click)="sendOtp()" [disabled]="!newEmail">Send OTP to Email</button>
+    </div>
+    <div class="col-md-12 form-group">
+      <label>Enter Otp
+        <input type="email" class="form-control pull-left" id="otp" [(ngModel)]="OTP">
+        <span class="pull-right" style="color:red" *ngIf="expire">OTP valid for {{expire}} minutes</span>
+      </label>
+
+    </div>
+    <div class="col-md-12 form-group">
+      <button type="submit" class="btn dp-btn-success" (click)="checkOtp()" [disabled]="!OTP">Update Email</button>
+    </div>
+    <div class="col-md-6">
+      <div class="alert alert-danger" *ngIf="emailUpdateFail">Invalid OTP. </div>
+      <div class="alert alert-success" *ngIf="emailUpdateSuccess">Email Updated. </div>
+    </div>
+  </div>
+</div>

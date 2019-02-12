@@ -1,0 +1,84 @@
+<div id="band" class="container">
+
+  <div class="row">
+
+    <div class="col-md-9">
+      <div class="new-challenge white-bg" *ngFor="let challenge of challenges">
+        <h2 class="challengecard-title">{{challenge?.name}}</h2>
+        <div class="card-details">
+          <span [ngClass]="{easy:(challenge.difficulty===0),difficulty:(challenge.difficulty===1),medium:(challenge.difficulty===2)}">
+            <span *ngIf="challenge.difficulty===0">Easy</span>
+            <span *ngIf="challenge.difficulty===1">Medium</span>
+            <span *ngIf="challenge.difficulty===2">Hard</span>
+          </span>
+          <span class="max-score detail-item">| Max Score: {{challenge?.score}}</span>
+          <!-- <span class="success-ratio detail-item">Success Rate: 93.92%</span> -->
+        </div>
+        <!-- <div class="col-md-9 row preview-content">
+          {{challenge?.description}}
+        </div> -->
+        <div class="col-md-3 pull-right">
+          <button class="ui-btn-primary-solve" (click)="navigateToPracticeSession(challenge._id)">{{buttonText}}</button>
+        </div>
+      </div>
+      <br>
+    </div>
+    <div class="col-md-3">
+      <div class="border-bottom">
+        <div class="group-label">Status</div>
+        <input type="radio" value="solved" name="status" [(ngModel)]="status" required class="checkbox-input">
+        <span class="checkbox-input-span">Solved</span>
+
+        <div>
+          <input type="radio" value="unsolved" name="status" [(ngModel)]="status" required class="checkbox-input">
+          <span class="checkbox-input-span">Un-Solved</span>
+        </div>
+
+      </div>
+
+      <div class="border-bottom">
+        <div class="group-label">DIFFICULTY</div>
+        <input type="checkbox" class="checkbox-input" [(ngModel)]="difficulty[0]">
+        <span class="checkbox-input-span">Easy</span>
+        <div>
+          <input type="checkbox" class="checkbox-input" [(ngModel)]="difficulty[1]">
+          <span class="checkbox-input-span">Medium</span>
+        </div>
+        <div>
+          <input type="checkbox" class="checkbox-input" [(ngModel)]="difficulty[2]">
+          <span class="checkbox-input-span">Hard</span>
+        </div>
+      </div>
+
+
+      <div class="border-bottom">
+        <!-- <div class="group-label">Tags</div> -->
+        <!-- <input class="checkbox-input"> -->
+        <div class="form-group">
+          <!--  -->
+          <mat-form-field class="demo-chip-list">
+            <mat-chip-list #chipList>
+              <mat-chip *ngFor="let tag of tags" [selectable]="selectable" [removable]="removable" (removed)="remove(tag)">
+                {{tag}}
+                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+              </mat-chip>
+              <input placeholder="TAGS" #tagInput [formControl]="tagCtrl" [matAutocomplete]="auto" [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                (input)="tagValueEntered(tagInput.value)" (focus)="tagValueEntered(tagInput.value)" [matChipInputAddOnBlur]="addOnBlur"
+                (matChipInputTokenEnd)="add($event)" />
+            </mat-chip-list>
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+              <mat-option *ngFor="let filteredTag of filteredTags" [value]="filteredTag">
+                {{ filteredTag }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+          <!--  -->
+        </div>
+      </div>
+      <button class="margin-top ui-btn-primary-solve" (click)="filter();filterClicked=true;">Apply Filter</button>
+    </div>
+
+
+  </div>
+  <i *ngIf="showLoader" class="fa fa-spinner fa-spin" style="font-size: 40px;position: relative;bottom: -20px;left: 35%;"></i>
+</div>

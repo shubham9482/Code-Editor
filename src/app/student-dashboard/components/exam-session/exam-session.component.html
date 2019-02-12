@@ -1,0 +1,51 @@
+<div class="row col-sm-12 questions-bg" style="height: 100%;">
+  <div class="row col-sm-4 list-bg">
+    <div class="list-bg-footer">Question List</div>
+    <ol>
+      <li class="cursor-pointer" *ngFor="let question of questions.documents;let i=index" (click)="selectedQuestion=question;selectedQuestionIndex=i">
+        Question {{i+1}}</li>
+
+    </ol>
+    <!-- <div class="list-bg-footer">
+      <span class="attempt"></span>Attempted
+      <span class="un-attempt"></span>Un-Attempted</div> -->
+  </div>
+  <div class="col-sm-8">
+    <div class="col-md-8">
+      <h3 class="white-text">Exam Name:{{questions?.examName}}</h3>
+    </div>
+    <!-- <div class="col-md-2 white-text" style="margin-top: 10px;">Timer:HH:MM</div> -->
+
+    <span class="col-md-2 white-text">
+      <span [ngClass]="{timerRed:(minutes<=1)}">
+        Time Remaining :
+        <span *ngIf="minutes<10">0</span>{{minutes}}:
+        <span *ngIf="seconds<10">0</span>{{seconds}}
+      </span>
+    </span>
+    <div class="question-bg">
+      <h3 style="font-weight:bold">Q, {{selectedQuestion?.question}}?</h3><br>
+      <div class="row" *ngFor="let option of selectedQuestion.options;let i=index">
+        <div class="col-md-1 text-center">
+          <input style="float: left" type="checkbox" [(ngModel)]="selectedQuestion.answers[i]"/>
+          <span class="ml-2">{{i+1}}.</span>
+        </div>
+        <div class="col-md-11">{{option}}.</div>
+      </div>
+
+      <br>
+      <br>
+      <span class="pull-left">
+        <button type="button" class="pull-left btn btn-danger"
+        (click)="(selectedQuestionIndex===0)?(selectedQuestion=selectedQuestion):(selectedQuestion=questions.documents[selectedQuestionIndex-1]);
+                  (selectedQuestionIndex===0)?(selectedQuestionIndex=selectedQuestionIndex):(selectedQuestionIndex=selectedQuestionIndex-1)" [disabled]="selectedQuestionIndex===0">Previous Question</button>
+        <button type="button" class="pull-right btn btn-danger"
+        (click)="(selectedQuestionIndex===questions.documents.length-1)?(selectedQuestion=selectedQuestion):(selectedQuestion=questions.documents[selectedQuestionIndex+1]);
+                  (selectedQuestionIndex===questions.documents.length-1)?(selectedQuestionIndex=selectedQuestionIndex):(selectedQuestionIndex=selectedQuestionIndex+1)" [disabled]="selectedQuestionIndex===questions.documents.length-1">Next Question</button>
+      </span>
+      <span class="pull-right">
+        <button type="button" class="btn btn-success" (click)="submit()">Submit</button>
+      </span>
+    </div>
+  </div>
+</div>

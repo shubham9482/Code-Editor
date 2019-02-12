@@ -1,0 +1,136 @@
+<div id="band" class="container">
+
+  <ng-container *ngIf="showLabs">
+    <div class="col-md-4 row">
+      <h2>
+        <span class="glyphicon glyphicon pr-6 glyphicon-th-list"></span> Labs</h2>
+      <!-- <Select class="form-control" type="text">
+            <option>Select Lab</option>
+          </Select> -->
+    </div>
+    <div class="col-sm-12 row">
+      <div class="col-md-6 gray-box" *ngFor="let lab of studentLab">
+        <div class="row">
+
+          <div class="col-md-9">
+            <h3>{{lab?.name}}</h3>
+            <p class="line-height-20px" [ngClass]="{'hidden-content':(readMore),'show-content':(!readMore)}">
+              {{lab?.description}}
+            </p>
+            <!-- <a (click)="readMore=false" class="cursor-pointer" *ngIf="readMore">Read More...</a>
+                    <a (click)="readMore=true" class="cursor-pointer" *ngIf="!readMore">Read Less...</a> -->
+          </div>
+
+          <div class="col-md-3">
+            <div class="weeks-stats pull-right">
+              <span style="font-size: 30px; line-height:30px">{{lab?.weeksCompleted}}/{{lab?.totalWeeks}}</span>
+              <br>
+              <b>Weeks</b>
+            </div>
+          </div>
+
+
+        </div>
+        <div class="">
+          <!-- <span class="label label-success" style="font-family: arial;">Labels-Incharge Faculty, Admin</span> -->
+          <button type="button" class="btn dp-btn-danger pull-right" (click)="getLabReport(lab)">
+            <span class="glyphicon glyphicon-eye-open"></span>Review</button>
+
+        </div>
+      </div>
+
+
+
+    </div>
+  </ng-container>
+  <ng-container *ngIf="!showLabs">
+    <div class="row col-sm-12">
+
+      <div class="backDiv ">
+        <button class="btn dp-btn-success float-right margin-bottom margin-top" (click)="showLabs=true">
+          <i class="fas fa-arrow-left"></i>
+          Back
+        </button>
+      </div>
+
+      <h2 class="margin-top" *ngIf="studentWiseReport.length != 0">Lab Report</h2>
+      <table *ngIf="studentWiseReport.length != 0" class="table-blue-bg table table faculty-table table-responsive table-striped table-hover "
+        cellspacing="0" cellpadding="3" rules="cols">
+        <tbody>
+          <tr align="left">
+            <th>
+              <input type="checkbox" [(ngModel)]="selectAll" (ngModelChange)="select('selectAll')" />
+            </th>
+            <th scope="col">Week Number</th>
+            <th scope="col">Attempts</th>
+            <th scope="col">Submission Date</th>
+            <th scope="col"></th>
+            <!-- <th scope="col">Week2 - to 12 weeks </th>
+                    <th scope="col">Average(sort)</th> -->
+          </tr>
+          <tr *ngFor="let report of studentWiseReport">
+            <td>
+              <input type="checkbox" [(ngModel)]="report.checked" (ngModelChange)="select(report)" />
+            </td>
+            <td>{{report?.number}}</td>
+            <td>
+              {{report?.attempts}}
+            </td>
+            <td>{{(report?.lastSubmittedDate | date:'yyyy-MM-dd HH:mm a':'-0000') || '-'}}</td>
+            <td>
+              <button type="button" class="pull-right btn dp-btn-danger" (click)="getLabSubmission(report)" data-toggle="modal" data-target="#myModal">
+                <span class="glyphicon glyphicon-eye-open"></span>View Code</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <button type="button" style="float: right;" class="pull-right btn dp-btn-primary" (click)="download()">
+        <span class="glyphicon glyphicon-download"></span>&nbsp;&nbsp; Download</button>
+
+      <!-- Week Number is a Heading
+              <br> Week Question
+              <br> Code -->
+      <!-- <button type="button" style="float: right;" class="btn btn-info btn-lg" >Back to table</button> -->
+
+
+    </div>
+  </ng-container>
+
+  <!-- <div class="modal-backdrop fade in" *ngIf="selectedReport" (click)="selectedReport=undefined"></div> -->
+</div>
+<div class="modal fade" id="myModal" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Submission Detail</h4>
+      </div>
+      <div class="modal-body">
+        <ng-container *ngIf="selectedReport.submissionId">
+          <p>Week Number : {{submissionReport?.number}}
+            <br> Submitted Time : {{(submissionReport?.submittedTime | date : 'yyyy-MM-dd HH:mm a' : '-0000')}}
+            <br> Attempts : {{submissionReport?.attempt}}
+            <br> Code
+            <br>
+          </p>
+          <pre>
+              <code>
+                  {{submissionReport?.code}}
+              </code>
+          </pre>
+        </ng-container>
+        <ng-container *ngIf="!selectedReport.submissionId">
+          <p>
+            No Submission has been made.
+          </p>
+        </ng-container>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="pull-right btn dp-btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>

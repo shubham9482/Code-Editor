@@ -1,0 +1,95 @@
+<div id="band" class="container">
+  
+  <div class="row">
+    <div class="col-sm-4">
+      <h2>Manage Exam</h2>
+
+      <div class="form-group">
+
+        <Select class="form-control" type="text">  
+               <option>Select Exam</option> </Select> Exam Name<input class="form-control" type="text"> Description
+        <textarea rows="4" cols="50" class="form-control"></textarea> Start Date<input class="form-control" type="date">        End Date<input class="form-control" type="date">
+
+        <h2>Questions</h2>
+      </div>
+    </div>
+  </div>
+
+  <div class="row col-sm-8">
+    <table class="table-blue-bg table table faculty-table table-responsive table-striped table-hover " cellspacing="0" cellpadding="3"
+      rules="cols">
+      <tbody>
+        <tr align="left">
+          <th scope="col">SN</th>
+          <th scope="col">Question Name</th>
+          <th scope="col">Question tag</th>
+
+          <th scope="col">Delete</th>
+
+
+
+        </tr>
+        <tr>
+          <td align="center"></td>
+          <td>
+            Swapna Thokala
+          </td>
+
+          <td>
+            CMRCET
+          </td>
+          <td>
+            <button class="btn btn-danger m-2">Delete</button>
+          </td>
+
+
+
+        </tr>
+      </tbody>
+    </table> <button class="btn btn-success m-2">Create</button>
+
+  </div>
+
+  <div class="col-sm-2"><button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Add New Question</button></div>
+
+
+
+
+
+
+
+</div>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+      </div>
+      <div class="modal-body">
+        Tag Name<input class="form-control form-group" type="text">
+        <button type="button" class="btn btn-info btn-lg">Add</button>
+      </div>
+      <div align="center">Or</div>
+      <div class="modal-body" style="padding-top:0px;">
+        Question Name<br> <input type="text">
+        <h5> Question Option</h5>
+
+        <input class="form-group" type="checkbox"><input class="form-group" type="text"><br>
+        <input class="form-group" type="checkbox"> <input class="form-group" type="text"><br>
+        <input class="form-group" type="checkbox"> <input class="form-group" type="text"><br>
+        <input class="form-group" type="checkbox"> <input class="form-group" type="text"><br> Tag <input class="form-group"
+          type="text">
+        <button type="button" class="btn btn-success">Add</button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>

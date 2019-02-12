@@ -1,0 +1,12 @@
+label {
+    cursor: pointer;
+    /* Style as you please, it will become the visible UI component. */
+ }
+ 
+ #inputupload-text,#outputupload-text {
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+ }
+
+ 
